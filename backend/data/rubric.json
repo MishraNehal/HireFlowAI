@@ -1,0 +1,47 @@
+[
+  {
+    "role_name": "Senior Python Engineer",
+    "criteria": [
+      {"name": "Python Core & Advanced Concepts", "weight": 0.3, "description": "Demonstrates mastery of GIL, asyncio, generators, decorators, and memory management."},
+      {"name": "Database & ORM Design", "weight": 0.25, "description": "Proficient in optimizing queries, schema design, and SQLAlchemy/Django ORM."},
+      {"name": "System Architecture & API Design", "weight": 0.25, "description": "Designs clean REST/GraphQL APIs and scalable background worker pipelines."},
+      {"name": "Testing & Code Quality", "weight": 0.2, "description": "Prioritizes pytest, unit/integration testing, CI/CD, and robust error handling."}
+    ]
+  },
+  {
+    "role_name": "Lead Frontend Developer (React)",
+    "criteria": [
+      {"name": "React Hooks & State Management", "weight": 0.3, "description": "Deep understanding of memoization, custom hooks, and state management (Zustand/Redux vs Context)."},
+      {"name": "Core Web Vitals & Optimization", "weight": 0.3, "description": "Knows how to optimize rendering, code-split, and fix CLS/FID/LCP issues."},
+      {"name": "CSS/Styling & UI Architecture", "weight": 0.2, "description": "Experienced in CSS Modules, Tailwind CSS, or CSS-in-JS design systems."},
+      {"name": "Technical Leadership & Mentoring", "weight": 0.2, "description": "Ability to guide architectural choices, review code, and mentor team members."}
+    ]
+  },
+  {
+    "role_name": "Associate Product Manager",
+    "criteria": [
+      {"name": "Product Strategy & Vision", "weight": 0.3, "description": "Defines clear value propositions, targets right user segments, and aligns with business goals."},
+      {"name": "Data-Driven Prioritization", "weight": 0.3, "description": "Uses frameworks like RICE/MoSCoW to prioritize backlog based on quantitative/qualitative data."},
+      {"name": "User Empathy & Research", "weight": 0.2, "description": "Designs effective user interviews and usability tests to gather insights."},
+      {"name": "Agile Execution & Communication", "weight": 0.2, "description": "Writes comprehensive PRDs and maps clear features with engineering and UX teams."}
+    ]
+  },
+  {
+    "role_name": "Machine Learning Engineer",
+    "criteria": [
+      {"name": "ML/DL Theory & Frameworks", "weight": 0.3, "description": "Deep knowledge of optimization, loss functions, Transformers, and frameworks like PyTorch/TensorFlow."},
+      {"name": "Feature Engineering & Data Pipeline", "weight": 0.25, "description": "Able to handle imbalanced datasets, process high-dimensional features, and construct robust pipelines."},
+      {"name": "Model Evaluation & Tuning", "weight": 0.25, "description": "Adept at tuning hyperparameters and choosing appropriate metrics like F1-score or ROC-AUC."},
+      {"name": "MLOps & Model Deployment", "weight": 0.2, "description": "Deploying models as microservices and monitoring for data/concept drift."}
+    ]
+  },
+  {
+    "role_name": "DevOps Engineer",
+    "criteria": [
+      {"name": "Infrastructure as Code (IaC)", "weight": 0.3, "description": "Mastery of Terraform, declarative vs imperative paradigms, and infrastructure modularization."},
+      {"name": "Containerization & Orchestration", "weight": 0.3, "description": "Expert in Docker isolation (cgroups/namespaces) and Kubernetes cluster operations."},
+      {"name": "CI/CD & Deployment Strategies", "weight": 0.2, "description": "Implements automated blue-green, canary, or rolling updates using GitOps (ArgoCD/Flux)."},
+      {"name": "Networking & Cloud Security", "weight": 0.2, "description": "Configuring VPC, routing, reverse proxies (Nginx), DNS, and secure secrets management."}
+    ]
+  }
+]

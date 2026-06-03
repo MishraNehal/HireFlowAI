@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1,
+    "role_name": "Senior Python Engineer",
+    "skills_required": ["Python", "FastAPI", "SQL", "Docker", "AWS"],
+    "min_experience": 5,
+    "responsibilities": "Design, build and maintain scalable backend services and API architectures. Collaborate with frontend and ML engineers to deploy models and optimize database queries.",
+    "status": "Approved"
+  },
+  {
+    "id": 2,
+    "role_name": "Lead Frontend Developer (React)",
+    "skills_required": ["React", "Tailwind CSS", "TypeScript", "Vite", "Jest"],
+    "min_experience": 6,
+    "responsibilities": "Lead the UI development for our core platforms. Build premium, accessible, and fast web application components using React and Tailwind CSS. Mentor junior developers.",
+    "status": "Approved"
+  },
+  {
+    "id": 3,
+    "role_name": "Associate Product Manager",
+    "skills_required": ["Product Strategy", "Agile", "SQL", "Wireframing", "User Research"],
+    "min_experience": 2,
+    "responsibilities": "Define product features, run backlog grooming, and write user stories. Engage with customers and stakeholders to gather feedback and drive requirements.",
+    "status": "Approved"
+  },
+  {
+    "id": 4,
+    "role_name": "Machine Learning Engineer",
+    "skills_required": ["Python", "PyTorch", "Scikit-Learn", "TensorFlow", "MLOps"],
+    "min_experience": 3,
+    "responsibilities": "Design, train, and deploy machine learning models. Build data pipelines and integrate models with production software systems.",
+    "status": "Approved"
+  },
+  {
+    "id": 5,
+    "role_name": "DevOps Engineer",
+    "skills_required": ["AWS", "Terraform", "Docker", "Kubernetes", "CI/CD"],
+    "min_experience": 4,
+    "responsibilities": "Manage cloud infrastructure, deploy and scale Kubernetes clusters, configure CI/CD pipelines, and ensure platform high-availability and security.",
+    "status": "Approved"
+  }
+]

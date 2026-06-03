@@ -1,0 +1,162 @@
+[
+  {
+    "name": "Alex Mercer",
+    "email": "alex.mercer@example.com",
+    "phone": "+1-555-0101",
+    "parsed_skills": ["Python", "Django", "FastAPI", "SQLAlchemy", "PostgreSQL", "Docker", "pytest", "asyncio"],
+    "experience_years": 6.5,
+    "resume_path": "resumes/alex_mercer.pdf"
+  },
+  {
+    "name": "Sarah Connor",
+    "email": "sarah.connor@example.com",
+    "phone": "+1-555-0102",
+    "parsed_skills": ["Python", "Flask", "Celery", "Redis", "MySQL", "AWS", "gRPC"],
+    "experience_years": 8.0,
+    "resume_path": "resumes/sarah_connor.pdf"
+  },
+  {
+    "name": "David Lightman",
+    "email": "david.lightman@example.com",
+    "phone": "+1-555-0103",
+    "parsed_skills": ["Python", "FastAPI", "SQLAlchemy", "PostgreSQL", "React", "Docker", "Kubernetes"],
+    "experience_years": 4.5,
+    "resume_path": "resumes/david_lightman.pdf"
+  },
+  {
+    "name": "Elena Fisher",
+    "email": "elena.fisher@example.com",
+    "phone": "+1-555-0104",
+    "parsed_skills": ["Python", "Django", "FastAPI", "MongoDB", "RabbitMQ", "pytest"],
+    "experience_years": 7.0,
+    "resume_path": "resumes/elena_fisher.pdf"
+  },
+  {
+    "name": "John Doe",
+    "email": "john.doe@example.com",
+    "phone": "+1-555-0201",
+    "parsed_skills": ["React", "TypeScript", "Redux Toolkit", "Zustand", "HTML5", "CSS3", "Webpack", "Tailwind CSS"],
+    "experience_years": 7.5,
+    "resume_path": "resumes/john_doe.pdf"
+  },
+  {
+    "name": "Jane Smith",
+    "email": "jane.smith@example.com",
+    "phone": "+1-555-0202",
+    "parsed_skills": ["React", "JavaScript", "HTML5", "CSS3", "SASS", "Context API", "Jest", "GraphQL"],
+    "experience_years": 5.0,
+    "resume_path": "resumes/jane_smith.pdf"
+  },
+  {
+    "name": "Miles Morales",
+    "email": "miles.morales@example.com",
+    "phone": "+1-555-0203",
+    "parsed_skills": ["React", "TypeScript", "Next.js", "Zustand", "Tailwind CSS", "Vite", "Cypress"],
+    "experience_years": 8.5,
+    "resume_path": "resumes/miles_morales.pdf"
+  },
+  {
+    "name": "Gwen Stacy",
+    "email": "gwen.stacy@example.com",
+    "phone": "+1-555-0204",
+    "parsed_skills": ["React", "TypeScript", "Redux", "CSS Modules", "HTML5", "Webpack", "Storybook"],
+    "experience_years": 6.0,
+    "resume_path": "resumes/gwen_stacy.pdf"
+  },
+  {
+    "name": "Bruce Wayne",
+    "email": "bruce.wayne@example.com",
+    "phone": "+1-555-0301",
+    "parsed_skills": ["Product Strategy", "Backlog Prioritization", "RICE", "Agile/Scrum", "User Research", "SQL", "Jira", "Mixpanel"],
+    "experience_years": 3.5,
+    "resume_path": "resumes/bruce_wayne.pdf"
+  },
+  {
+    "name": "Clark Kent",
+    "email": "clark.kent@example.com",
+    "phone": "+1-555-0302",
+    "parsed_skills": ["Product Strategy", "Agile/Scrum", "PRD Writing", "User Interviews", "A/B Testing", "Google Analytics", "Figma"],
+    "experience_years": 4.0,
+    "resume_path": "resumes/clark_kent.pdf"
+  },
+  {
+    "name": "Diana Prince",
+    "email": "diana.prince@example.com",
+    "phone": "+1-555-0303",
+    "parsed_skills": ["Product Strategy", "Roadmapping", "MoSCoW", "User Research", "Agile/Scrum", "SQL", "Jira", "Tableau"],
+    "experience_years": 5.0,
+    "resume_path": "resumes/diana_prince.pdf"
+  },
+  {
+    "name": "Barry Allen",
+    "email": "barry.allen@example.com",
+    "phone": "+1-555-0304",
+    "parsed_skills": ["Backlog Prioritization", "PRD Writing", "User Interviews", "Agile/Scrum", "Jira", "Amplitude", "Figma"],
+    "experience_years": 2.5,
+    "resume_path": "resumes/barry_allen.pdf"
+  },
+  {
+    "name": "Tony Stark",
+    "email": "tony.stark@example.com",
+    "phone": "+1-555-0401",
+    "parsed_skills": ["Python", "PyTorch", "TensorFlow", "scikit-learn", "numpy", "pandas", "MLOps", "Transformers", "Docker"],
+    "experience_years": 5.5,
+    "resume_path": "resumes/tony_stark.pdf"
+  },
+  {
+    "name": "Bruce Banner",
+    "email": "bruce.banner@example.com",
+    "phone": "+1-555-0402",
+    "parsed_skills": ["Python", "PyTorch", "Keras", "scikit-learn", "numpy", "MLflow", "Kubeflow", "SQL"],
+    "experience_years": 7.0,
+    "resume_path": "resumes/bruce_banner.pdf"
+  },
+  {
+    "name": "Peter Parker",
+    "email": "peter.parker@example.com",
+    "phone": "+1-555-0403",
+    "parsed_skills": ["Python", "PyTorch", "scikit-learn", "numpy", "pandas", "Transformers", "HuggingFace", "FastAPI"],
+    "experience_years": 3.0,
+    "resume_path": "resumes/peter_parker.pdf"
+  },
+  {
+    "name": "Natasha Romanoff",
+    "email": "natasha.romanoff@example.com",
+    "phone": "+1-555-0404",
+    "parsed_skills": ["Python", "TensorFlow", "scikit-learn", "pandas", "MLOps", "Docker", "AWS SageMaker"],
+    "experience_years": 4.5,
+    "resume_path": "resumes/natasha_romanoff.pdf"
+  },
+  {
+    "name": "Steve Rogers",
+    "email": "steve.rogers@example.com",
+    "phone": "+1-555-0501",
+    "parsed_skills": ["Terraform", "Docker", "Kubernetes", "AWS", "CI/CD", "GitHub Actions", "Nginx", "Linux", "Prometheus"],
+    "experience_years": 6.0,
+    "resume_path": "resumes/steve_rogers.pdf"
+  },
+  {
+    "name": "Thor Odinson",
+    "email": "thor.odinson@example.com",
+    "phone": "+1-555-0502",
+    "parsed_skills": ["Terraform", "Ansible", "Docker", "Kubernetes", "AWS", "CI/CD", "GitLab CI", "Linux", "Grafana"],
+    "experience_years": 8.0,
+    "resume_path": "resumes/thor_odinson.pdf"
+  },
+  {
+    "name": "Wanda Maximoff",
+    "email": "wanda.maximoff@example.com",
+    "phone": "+1-555-0503",
+    "parsed_skills": ["Terraform", "Docker", "Kubernetes", "Azure", "CI/CD", "ArgoCD", "Linux", "Bash"],
+    "experience_years": 4.0,
+    "resume_path": "resumes/wanda_maximoff.pdf"
+  },
+  {
+    "name": "Sam Wilson",
+    "email": "sam.wilson@example.com",
+    "phone": "+1-555-0504",
+    "parsed_skills": ["Terraform", "Docker", "Kubernetes", "AWS", "CI/CD", "Jenkins", "Nginx", "Linux"],
+    "experience_years": 5.0,
+    "resume_path": "resumes/sam_wilson.pdf"
+  }
+]
