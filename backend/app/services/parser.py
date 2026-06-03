@@ -88,4 +88,8 @@ def fallback_regex_parser(text: str) -> Dict[str, Any]:
 def parse_resume(pdf_path: str) -> Dict[str, Any]:
     """Main function to parse resume from file path."""
     text_content = extract_text_from_pdf(pdf_path)
-    return parse_resume_content(text_content)
+    parsed = parse_resume_content(text_content)
+    parsed["resume_text"] = text_content
+    parsed["parsed_skills"] = parsed.get("skills", [])
+    return parsed
+

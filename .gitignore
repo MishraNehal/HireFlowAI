@@ -34,3 +34,8 @@ build/
 *.njsproj
 *.sln
 *.sw?
+
+# Project local databases and uploads
+backend/chroma_db/
+backend/uploads/
+
