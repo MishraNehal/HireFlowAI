@@ -3,6 +3,20 @@ from sqlalchemy.orm import relationship
 from datetime import datetime
 from app.database.session import Base
 
+
+class HiringRequest(Base):
+    __tablename__ = "hiring_requests"
+
+    id = Column(Integer, primary_key=True, index=True)
+    company_name = Column(String, nullable=False)
+    role_name = Column(String, nullable=False, index=True)
+    skills_required = Column(JSON, nullable=False)   # list of strings
+    experience_level = Column(String, nullable=True)  # e.g. "0-1 Years"
+    num_openings = Column(Integer, default=1)
+    additional_context = Column(Text, nullable=True)
+    status = Column(String, default="Pending")  # Pending, JD Generated, Approved
+    created_at = Column(DateTime, default=datetime.utcnow)
+
 class JobDescription(Base):
     __tablename__ = "job_descriptions"
 

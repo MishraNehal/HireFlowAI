@@ -2,6 +2,59 @@ from pydantic import BaseModel, EmailStr, Field
 from typing import List, Optional, Dict, Any
 from datetime import datetime
 
+
+# --- Hiring Request ---
+class HiringRequestCreate(BaseModel):
+    company_name: str
+    role_name: str
+    skills_required: List[str]
+    experience_level: str = "0-2 Years"
+    num_openings: int = 1
+    additional_context: Optional[str] = None
+
+class HiringRequestORM(HiringRequestCreate):
+    id: int
+    status: str
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
+
+
+# --- JD Generation ---
+class GenerateJDRequest(BaseModel):
+    hiring_request_id: int
+
+class GeneratedJD(BaseModel):
+    job_title: str
+    company_overview: str
+    responsibilities: List[str]
+    required_skills: List[str]
+    preferred_skills: List[str]
+    eligibility_criteria: str
+    hiring_process: List[str]
+    perks: List[str]
+
+
+# --- Approval ---
+class ApprovalAction(BaseModel):
+    approved: bool
+    notes: Optional[str] = None
+
+
+# --- Offer Letter ---
+class OfferLetterRequest(BaseModel):
+    candidate_id: int
+    company_name: str
+    start_date: Optional[str] = None
+    salary_range: Optional[str] = None
+
+
+# --- Onboarding ---
+class OnboardingRequest(BaseModel):
+    candidate_id: int
+    company_name: str
+
 # --- Rubric ---
 class RubricBase(BaseModel):
     criteria: List[Dict[str, Any]]
