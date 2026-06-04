@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useHireFlow } from '../context/HireFlowContext';
 import { listPipelines, resolveHRGate } from '../services/api';
-import { SectionHeader, PipelineBadge, LoadingOverlay, EmptyState, ScoreBadge } from '../components/UI';
+import { SectionHeader, PipelineBadge, LoadingOverlay, EmptyState } from '../components/UI';
 
 export default function ApprovalCenter() {
   const { approvedJob, pipelines, setPipelines, setSelectedCandidate, goNext, goPrev, showToast } = useHireFlow();
@@ -40,9 +40,9 @@ export default function ApprovalCenter() {
 
   if (loading) return <LoadingOverlay message="Loading approval pipeline..." />;
 
-  const hrPending = pipelines.filter(p => p.status === 'HR');
+  const hrPending = pipelines.filter(p => ['HR', 'Interviewing'].includes(p.status));
   const offered = pipelines.filter(p => p.status === 'Offered');
-  const others = pipelines.filter(p => !['HR', 'Offered'].includes(p.status));
+  const others = pipelines.filter(p => !['HR', 'Interviewing', 'Offered'].includes(p.status));
 
   return (
     <div>
@@ -53,7 +53,7 @@ export default function ApprovalCenter() {
       </div>
 
       {pipelines.length === 0 ? (
-        <EmptyState icon="📭" title="No pipeline records" subtitle="Candidates appear here after resume evaluation." />
+        <EmptyState icon="📭" title="No candidates in pipeline" subtitle="Candidates appear here after their resumes have been evaluated and scored." />
       ) : (
         <>
           {hrPending.length > 0 && (
@@ -116,6 +116,10 @@ function Section({ title, count, color, children }) {
 }
 
 function PipelineRow({ p, feedback, setFeedback, onApprove, onReject, actionLoading }) {
+  const interviewStatus = p.status === 'HR'
+    ? { label: '✅ Interview Passed', color: '#10b981', bg: 'rgba(16,185,129,0.12)' }
+    : { label: '⏳ Awaiting / Skipped Interview', color: '#f59e0b', bg: 'rgba(245,158,11,0.12)' };
+
   return (
     <div className="card" style={{ marginBottom: '0.75rem' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap', marginBottom: '1rem' }}>
@@ -123,13 +127,26 @@ function PipelineRow({ p, feedback, setFeedback, onApprove, onReject, actionLoad
           <div style={{ fontWeight: 700, fontSize: '1rem' }}>{p.candidate?.name || `Candidate #${p.candidate_id}`}</div>
           <div style={{ color: '#94a3b8', fontSize: '0.85rem' }}>{p.candidate?.email}</div>
         </div>
-        <PipelineBadge status={p.status} />
-        {p.interview_gate_feedback && (
-          <div style={{ fontSize: '0.75rem', color: '#94a3b8', maxWidth: 300 }}>
-            Interview feedback: {p.interview_gate_feedback}
-          </div>
-        )}
+        <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', flexWrap: 'wrap' }}>
+          <span style={{
+            background: interviewStatus.bg,
+            color: interviewStatus.color,
+            border: `1px solid ${interviewStatus.color}44`,
+            borderRadius: 999,
+            padding: '0.2rem 0.7rem',
+            fontSize: '0.72rem',
+            fontWeight: 700,
+          }}>
+            {interviewStatus.label}
+          </span>
+          <PipelineBadge status={p.status} />
+        </div>
       </div>
+      {p.interview_gate_feedback && (
+        <div style={{ fontSize: '0.78rem', color: '#94a3b8', marginBottom: '0.75rem', padding: '0.5rem 0.75rem', background: 'rgba(255,255,255,0.03)', borderRadius: 8 }}>
+          💬 Interview feedback: {p.interview_gate_feedback}
+        </div>
+      )}
       <textarea
         className="form-textarea" rows={2}
         placeholder="Optional HR feedback / notes..."

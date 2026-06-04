@@ -51,6 +51,9 @@ export const uploadResume = (jobId, file) => {
   }).then(r => r.data);
 };
 
+export const evaluateCandidate = (candidateId, jobId) =>
+  api.post(`/api/candidates/${candidateId}/evaluate/${jobId}`).then(r => r.data);
+
 export const getCandidateScores = (jobId) =>
   api.get(`/api/candidates/scores?job_id=${jobId}`).then(r => r.data);
 
@@ -69,7 +72,7 @@ export const submitInterviewAnswers = (pipelineId, answers) =>
   api.post(`/api/pipelines/${pipelineId}/interview/submit`, { answers }).then(r => r.data);
 
 export const resolveHRGate = (pipelineId, approved, feedback = '') =>
-  api.post(`/api/pipelines/${pipelineId}/hr/resolve`, {
+  api.post(`/api/pipelines/${pipelineId}/hr-action`, {
     approved,
     feedback,
   }).then(r => r.data);

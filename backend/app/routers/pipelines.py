@@ -1,6 +1,6 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.orm import Session
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 from pydantic import BaseModel
 from app.database.session import get_db
 from app.models.models import InterviewPipeline, InterviewQuestion, CandidateResponse, Candidate
@@ -18,13 +18,23 @@ class SubmitAnswersRequest(BaseModel):
     answers: List[AnswerSubmission]
 
 class HRActionRequest(BaseModel):
-    passed: bool
-    feedback: str
+    passed: bool = False
+    approved: Optional[bool] = None  # alias for 'passed' from frontend
+    feedback: str = ""
 
 
 @router.get("", response_model=List[schemas.InterviewPipelineORM])
 def list_pipelines(db: Session = Depends(get_db)):
     return db.query(InterviewPipeline).all()
+
+@router.get("/questions", response_model=List[schemas.InterviewQuestionORM])
+def get_questions_by_job(
+    job_id: int = Query(..., description="Job ID to fetch interview questions for"),
+    db: Session = Depends(get_db)
+):
+    """Return all interview questions for a given job_id."""
+    questions = db.query(InterviewQuestion).filter(InterviewQuestion.job_id == job_id).all()
+    return questions
 
 @router.get("/{pipeline_id}", response_model=schemas.InterviewPipelineORM)
 def get_pipeline(pipeline_id: int, db: Session = Depends(get_db)):
@@ -148,13 +158,22 @@ def resolve_hr_gate(
     if not pipeline:
         raise HTTPException(status_code=404, detail="Pipeline not found")
 
-    if pipeline.status != "HR":
-        raise HTTPException(status_code=400, detail="Pipeline is not in the HR gate.")
+    # Allow HR action on candidates in 'HR' or 'Interviewing' status
+    # (HR managers can bypass the interview gate and approve directly)
+    if pipeline.status not in ("HR", "Interviewing"):
+        raise HTTPException(
+            status_code=400,
+            detail=f"Cannot perform HR action on a pipeline with status '{pipeline.status}'."
+        )
 
-    pipeline.hr_passed = payload.passed
+    # Support both 'passed' and 'approved' field names from frontend
+    is_approved = payload.approved if payload.approved is not None else payload.passed
+
+    pipeline.hr_passed = is_approved
     pipeline.hr_gate_feedback = payload.feedback
-    
-    if payload.passed:
+    pipeline.current_gate = "HR_Gate"
+
+    if is_approved:
         pipeline.status = "Offered"
     else:
         pipeline.status = "Rejected"

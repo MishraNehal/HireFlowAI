@@ -1,12 +1,13 @@
 import { useState, useRef } from 'react';
 import { useHireFlow } from '../context/HireFlowContext';
-import { uploadResume, getCandidateScores } from '../services/api';
+import { uploadResume, getCandidateScores, evaluateCandidate, listCandidates } from '../services/api';
 import { SectionHeader, LoadingOverlay, PipelineBadge } from '../components/UI';
 
 export default function ResumeUpload() {
   const { approvedJob, uploadedCandidates, setUploadedCandidates, setCandidateScores, goNext, goPrev, showToast } = useHireFlow();
   const [files, setFiles] = useState([]);
   const [uploading, setUploading] = useState(false);
+  const [scoring, setScoring] = useState(false);
   const [results, setResults] = useState([]);
   const [dragging, setDragging] = useState(false);
   const fileRef = useRef();
@@ -29,6 +30,29 @@ export default function ResumeUpload() {
     });
   };
 
+  // Score all candidates already in the DB for this job
+  const handleScoreAll = async () => {
+    if (!approvedJob?.id) return;
+    setScoring(true);
+    try {
+      const allCandidates = await listCandidates();
+      let scored = 0;
+      for (const cand of allCandidates) {
+        try {
+          await evaluateCandidate(cand.id, approvedJob.id);
+          scored++;
+        } catch (e) { /* skip already-scored or errors */ }
+      }
+      const scores = await getCandidateScores(approvedJob.id);
+      setCandidateScores(scores);
+      showToast('success', `Scored ${scored} candidate(s) successfully!`);
+    } catch (e) {
+      showToast('error', 'Failed to score candidates.');
+    } finally {
+      setScoring(false);
+    }
+  };
+
   const handleUpload = async () => {
     if (files.length === 0) return showToast('error', 'Please select at least one PDF resume.');
     setUploading(true);
@@ -45,20 +69,33 @@ export default function ResumeUpload() {
     const successful = uploadResults.filter(r => r.status === 'success').map(r => r.data);
     setUploadedCandidates(prev => [...prev, ...successful]);
 
-    // Fetch scores
+    // Auto-evaluate each uploaded candidate immediately
+    if (successful.length > 0 && approvedJob?.id) {
+      showToast('info', `Scoring ${successful.length} candidate(s)...`);
+      for (const cand of successful) {
+        const candidateId = cand.candidate?.id || cand.id;
+        if (candidateId) {
+          try {
+            await evaluateCandidate(candidateId, approvedJob.id);
+          } catch (e) { /* non-fatal */ }
+        }
+      }
+    }
+
+    // Fetch updated scores
     try {
       const scores = await getCandidateScores(approvedJob.id);
       setCandidateScores(scores);
     } catch (e) { /* non-fatal */ }
 
-    showToast('success', `${successful.length}/${files.length} resumes processed.`);
+    showToast('success', `${successful.length}/${files.length} resumes processed & scored.`);
     setFiles([]);
     setUploading(false);
   };
 
   const handleDrop = (e) => { e.preventDefault(); setDragging(false); addFiles(e.dataTransfer.files); };
 
-  if (uploading) return <LoadingOverlay message="Parsing & evaluating resumes with AI... This may take a moment." />;
+  if (uploading || scoring) return <LoadingOverlay message={uploading ? 'Parsing & evaluating resumes with AI... This may take a moment.' : 'Scoring all candidates with AI... Please wait.'} />;
 
   return (
     <div>
@@ -84,7 +121,14 @@ export default function ResumeUpload() {
             {files.map(f => (
               <div key={f.name} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.6rem 0.75rem', background: 'rgba(255,255,255,0.04)', borderRadius: 8, marginBottom: '0.4rem' }}>
                 <span style={{ fontSize: '0.85rem' }}>📄 {f.name}</span>
-                <span style={{ fontSize: '0.75rem', color: '#94a3b8' }}>{(f.size / 1024).toFixed(0)} KB</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                  <span style={{ fontSize: '0.75rem', color: '#94a3b8' }}>{(f.size / 1024).toFixed(0)} KB</span>
+                  <button
+                    onClick={() => setFiles(prev => prev.filter(x => x.name !== f.name))}
+                    title="Remove"
+                    style={{ background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', fontSize: '1rem', lineHeight: 1, padding: '0 2px' }}
+                  >✕</button>
+                </div>
               </div>
             ))}
             <button className="btn btn-primary" style={{ marginTop: '0.75rem', width: '100%' }} onClick={handleUpload}>
@@ -92,6 +136,7 @@ export default function ResumeUpload() {
             </button>
           </div>
         )}
+
       </div>
 
       {results.length > 0 && (
@@ -112,7 +157,12 @@ export default function ResumeUpload() {
 
       {uploadedCandidates.length > 0 && (
         <div className="card" style={{ marginBottom: '1.5rem' }}>
-          <h3 style={{ marginBottom: '1rem' }}>Parsed Candidates ({uploadedCandidates.length})</h3>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
+            <h3>Parsed Candidates ({uploadedCandidates.length})</h3>
+            <button className="btn btn-primary" style={{ fontSize: '0.8rem', padding: '0.5rem 1rem' }} onClick={handleScoreAll}>
+              ⚡ Score & Rank All
+            </button>
+          </div>
           {uploadedCandidates.map((c, i) => {
             const cand = c.candidate || c;
             return (

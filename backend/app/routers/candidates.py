@@ -1,8 +1,10 @@
 import os
+import re
+import asyncio
 import logging
-from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, status
+from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Query, status
 from sqlalchemy.orm import Session
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 from app.database.session import get_db
 from app.models.models import Candidate, CandidateScore, JobDescription, InterviewPipeline
 from app.schemas import schemas
@@ -22,6 +24,12 @@ os.makedirs(UPLOAD_DIR, exist_ok=True)
 def list_candidates(db: Session = Depends(get_db)):
     return db.query(Candidate).all()
 
+@router.get("/scores", response_model=List[schemas.CandidateScoreORM])
+def get_scores_by_job(job_id: int = Query(..., description="Job ID to fetch scores for"), db: Session = Depends(get_db)):
+    """Return all candidate scores for a given job_id (used by the ranking page)."""
+    scores = db.query(CandidateScore).filter(CandidateScore.job_id == job_id).all()
+    return scores
+
 @router.get("/{candidate_id}", response_model=schemas.CandidateORM)
 def get_candidate(candidate_id: int, db: Session = Depends(get_db)):
     candidate = db.query(Candidate).filter(Candidate.id == candidate_id).first()
@@ -30,42 +38,75 @@ def get_candidate(candidate_id: int, db: Session = Depends(get_db)):
     return candidate
 
 @router.post("/upload", response_model=schemas.CandidateORM, status_code=status.HTTP_201_CREATED)
-async def upload_resume(file: UploadFile = File(...), db: Session = Depends(get_db)):
-    if not file.filename.endswith(".pdf"):
+async def upload_resume(
+    file: UploadFile = File(...),
+    job_id: Optional[int] = Query(None),
+    db: Session = Depends(get_db)
+):
+    if not file.filename.lower().endswith(".pdf"):
         raise HTTPException(status_code=400, detail="Only PDF files are supported.")
 
-    # 1. Save uploaded file to disk
-    file_path = os.path.join(UPLOAD_DIR, file.filename)
+    # 1. Sanitize filename (replace spaces & special chars)
+    safe_name = re.sub(r"[^\w\.\-]", "_", file.filename)
+    file_path = os.path.join(UPLOAD_DIR, safe_name)
+
+    # 2. Save file to disk
     try:
+        content = await file.read()
+        if len(content) > 5 * 1024 * 1024:
+            raise HTTPException(status_code=413, detail="File exceeds 5MB limit.")
         with open(file_path, "wb") as f:
-            content = await file.read()
             f.write(content)
+    except HTTPException:
+        raise
     except Exception as e:
         logger.error(f"Failed to save uploaded file: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Failed to save file: {str(e)}")
 
-    # 2. Parse PDF
+    # 3. Parse PDF in a thread so it doesn't block the async event loop
     try:
-        parsed = parse_resume(file_path)
+        parsed = await asyncio.to_thread(parse_resume, file_path)
     except Exception as e:
-        logger.error(f"Failed to parse PDF: {str(e)}")
-        raise HTTPException(status_code=500, detail=f"Failed to parse resume: {str(e)}")
+        logger.warning(f"PDF parse failed for {safe_name}, using minimal fallback. Error: {str(e)}")
+        # Still create the candidate with minimal data — don't return 500
+        parsed = {
+            "name": safe_name.replace(".pdf", "").replace("_", " ").title(),
+            "email": "",
+            "phone": None,
+            "parsed_skills": [],
+            "experience_years": 0.0,
+            "resume_text": "",
+        }
 
-    # 3. Create Candidate DB record
-    db_candidate = Candidate(
-        name=parsed.get("name", "Unknown Candidate"),
-        email=parsed.get("email", "unknown@example.com"),
-        phone=parsed.get("phone", ""),
-        parsed_skills=parsed.get("parsed_skills", []),
-        experience_years=float(parsed.get("experience_years", 0.0)),
-        resume_path=file_path
-    )
-    
-    db.add(db_candidate)
-    db.commit()
-    db.refresh(db_candidate)
+    # 4. Upsert Candidate — avoid IntegrityError on duplicate email
+    existing = None
+    candidate_email = parsed.get("email", "") or ""
+    if candidate_email:
+        existing = db.query(Candidate).filter(Candidate.email == candidate_email).first()
 
-    return db_candidate
+    if existing:
+        # Update existing candidate with fresh data
+        existing.name = parsed.get("name", existing.name) or existing.name
+        existing.phone = parsed.get("phone", existing.phone) or existing.phone
+        existing.parsed_skills = parsed.get("parsed_skills", existing.parsed_skills) or existing.parsed_skills
+        existing.experience_years = float(parsed.get("experience_years", existing.experience_years) or 0.0)
+        existing.resume_path = file_path
+        db.commit()
+        db.refresh(existing)
+        return existing
+    else:
+        db_candidate = Candidate(
+            name=parsed.get("name", "Unknown Candidate"),
+            email=candidate_email,
+            phone=parsed.get("phone", "") or "",
+            parsed_skills=parsed.get("parsed_skills", []),
+            experience_years=float(parsed.get("experience_years", 0.0)),
+            resume_path=file_path
+        )
+        db.add(db_candidate)
+        db.commit()
+        db.refresh(db_candidate)
+        return db_candidate
 
 @router.post("/{candidate_id}/evaluate/{job_id}", response_model=Dict[str, Any])
 def evaluate_candidate_for_job(candidate_id: int, job_id: int, db: Session = Depends(get_db)):
@@ -146,7 +187,17 @@ def evaluate_candidate_for_job(candidate_id: int, job_id: int, db: Session = Dep
     db.refresh(db_pipeline)
 
     return {
-        "score": db_score,
+        "score": {
+            "id": db_score.id,
+            "candidate_id": db_score.candidate_id,
+            "job_id": db_score.job_id,
+            "total_score": db_score.total_score,
+            "skills_score": db_score.skills_score,
+            "experience_score": db_score.experience_score,
+            "projects_score": db_score.projects_score,
+            "jd_match_score": db_score.jd_match_score,
+            "breakdown_notes": db_score.breakdown_notes,
+        },
         "pipeline": {
             "id": db_pipeline.id,
             "status": db_pipeline.status,
