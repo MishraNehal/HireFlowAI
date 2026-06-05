@@ -15,6 +15,7 @@ def _heuristic_evaluate(
     resume_text: str,
     jd_role: str,
     jd_skills: List[str],
+    jd_responsibilities: str = ""
 ) -> Dict[str, Any]:
     """
     Smart local scorer that does NOT require an LLM.
@@ -64,11 +65,17 @@ def _heuristic_evaluate(
         experience_score = 50.0 if has_intern else 40.0
 
     # ── 3. JD Match Score (keyword density) ──────────────────────────────────
-    # Scan for role-relevant keywords from both skills list and role name
+    # Scan for role-relevant keywords from skills list, role name, and responsibilities
     role_words = re.findall(r'\w+', jd_role.lower())
-    all_keywords = [w for w in (role_words + [s.lower() for s in jd_skills]) if len(w) > 2]
-    keyword_hits = sum(1 for kw in all_keywords if kw in text_lower)
-    kw_ratio = keyword_hits / max(len(all_keywords), 1)
+    resp_words = re.findall(r'\w+', jd_responsibilities.lower()) if jd_responsibilities else []
+    all_keywords = [w for w in (role_words + resp_words + [s.lower() for s in jd_skills]) if len(w) > 2]
+    
+    # Optional: Filter out common stop words if necessary, but length > 2 covers some.
+    # To prevent inflating due to too many generic words, we can take unique words.
+    unique_keywords = list(set(all_keywords))
+    
+    keyword_hits = sum(1 for kw in unique_keywords if kw in text_lower)
+    kw_ratio = keyword_hits / max(len(unique_keywords), 1)
     jd_match_score = round(30 + kw_ratio * 65, 1)
 
     # ── 4. Projects Score ─────────────────────────────────────────────────────
@@ -167,7 +174,7 @@ def evaluate_resume(
 
     except Exception as e:
         logger.warning(f"LLM evaluation failed ({type(e).__name__}), using heuristic scorer.")
-        return _heuristic_evaluate(resume_text, jd_role, jd_skills)
+        return _heuristic_evaluate(resume_text, jd_role, jd_skills, jd_responsibilities)
 
 
 # ---------------------------------------------------------------------------

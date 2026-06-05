@@ -13,6 +13,7 @@ def generate_offer_letter(
     company_name: str,
     start_date: Optional[str] = None,
     salary_range: Optional[str] = None,
+    additional_notes: Optional[str] = None,
 ) -> str:
     """
     Generates a professional offer letter draft for a selected candidate.
@@ -33,6 +34,8 @@ def generate_offer_letter(
         f"Start Date: {start_date or 'To be confirmed'}\n"
         f"Salary/Compensation: {salary_range or 'As per company standards'}\n"
     )
+    if additional_notes:
+        user_content += f"Additional Notes/Clauses: {additional_notes}\n"
 
     try:
         letter_text = nexus_client.generate_prompt(system_prompt, user_content, temperature=0.5)

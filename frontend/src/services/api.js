@@ -82,6 +82,9 @@ export const getCandidatePipeline = (candidateId, jobId) =>
 
 // ─── Offer & Onboarding ─────────────────────────────────────────────────────
 
+export const getOfferCandidates = (jobId) =>
+  api.get('/api/offer/candidates', { params: jobId ? { job_id: jobId } : {} }).then(r => r.data);
+
 export const generateOfferLetter = (payload) =>
   api.post('/api/offer/generate', payload).then(r => r.data);
 

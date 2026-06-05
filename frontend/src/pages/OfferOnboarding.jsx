@@ -1,307 +1,290 @@
 import { useState, useEffect } from 'react';
 import { useHireFlow } from '../context/HireFlowContext';
-import { generateOfferLetter, generateOnboarding, getErrorMessage } from '../services/api';
+import { getOfferCandidates, generateOfferLetter, generateOnboarding, getErrorMessage } from '../services/api';
 import { SectionHeader, LoadingOverlay, EmptyState } from '../components/UI';
 
 export default function OfferOnboarding() {
-  const {
-    approvedJob,
-    selectedCandidate,
-    offerLetter, setOfferLetter,
-    onboardingChecklist, setOnboardingChecklist,
-    goPrev, showToast, resetAll,
-  } = useHireFlow();
+  const { approvedJob, goPrev, showToast, resetAll } = useHireFlow();
 
-  const [loadingOffer, setLoadingOffer] = useState(false);
-  const [loadingOnboarding, setLoadingOnboarding] = useState(false);
-  const [offerGenerated, setOfferGenerated] = useState(false);
-  const [onboardingGenerated, setOnboardingGenerated] = useState(false);
-  const [activeTab, setActiveTab] = useState('offer'); // 'offer' | 'onboarding'
+  const [candidates, setCandidates] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [expandedId, setExpandedId] = useState(null);
 
-  // Pre-fill form with candidate data if available
-  const [offerForm, setOfferForm] = useState({
-    candidate_name: selectedCandidate?.name || '',
-    candidate_email: selectedCandidate?.email || '',
-    job_title: approvedJob?.title || '',
-    company_name: approvedJob?.company || '',
-    salary: '',
-    start_date: '',
-    additional_notes: '',
-  });
+  // Per-candidate generated content: { [pipelineId]: { offerLetter, checklist } }
+  const [generated, setGenerated] = useState({});
+  const [loadingAction, setLoadingAction] = useState(null); // "offer-<id>" | "onboard-<id>"
 
   useEffect(() => {
-    if (selectedCandidate) {
-      setOfferForm(prev => ({
-        ...prev,
-        candidate_name: selectedCandidate.name || prev.candidate_name,
-        candidate_email: selectedCandidate.email || prev.candidate_email,
-      }));
-    }
-    if (approvedJob) {
-      setOfferForm(prev => ({
-        ...prev,
-        job_title: approvedJob.title || prev.job_title,
-        company_name: approvedJob.company || prev.company_name,
-      }));
-    }
-  }, [selectedCandidate, approvedJob]);
+    fetchCandidates();
+  }, []);
 
-  const handleGenerateOffer = async () => {
-    if (!offerForm.candidate_name || !offerForm.job_title || !offerForm.company_name) {
-      return showToast('error', 'Candidate name, job title, and company are required.');
-    }
-    setLoadingOffer(true);
+  const fetchCandidates = async () => {
+    setLoading(true);
     try {
-      const payload = {
-        candidate_name: offerForm.candidate_name,
-        candidate_email: offerForm.candidate_email,
-        job_title: offerForm.job_title,
-        company_name: offerForm.company_name,
-        salary: offerForm.salary,
-        start_date: offerForm.start_date,
-        additional_notes: offerForm.additional_notes,
-        job_id: approvedJob?.id,
-      };
-      const result = await generateOfferLetter(payload);
-      setOfferLetter(result.offer_letter || result.data?.offer_letter || '');
-      setOfferGenerated(true);
-      setActiveTab('offer');
-      showToast('success', '✅ Offer letter generated successfully!');
+      const data = await getOfferCandidates(approvedJob?.id || null);
+      setCandidates(data);
     } catch (err) {
-      showToast('error', getErrorMessage(err));
+      showToast('error', 'Failed to load onboarding candidates.');
     } finally {
-      setLoadingOffer(false);
+      setLoading(false);
     }
   };
 
-  const handleGenerateOnboarding = async () => {
-    setLoadingOnboarding(true);
+  const handleGenerateOffer = async (pipeline) => {
+    const actionKey = `offer-${pipeline.id}`;
+    setLoadingAction(actionKey);
     try {
       const payload = {
-        candidate_name: offerForm.candidate_name,
-        job_title: offerForm.job_title,
-        company_name: offerForm.company_name,
-        start_date: offerForm.start_date,
-        job_id: approvedJob?.id,
+        candidate_id: pipeline.candidate?.id || pipeline.candidate_id,
+        candidate_name: pipeline.candidate?.name || `Candidate #${pipeline.candidate_id}`,
+        job_title: pipeline.job?.role_name || 'the assigned role',
+        company_name: approvedJob?.company || 'Our Company',
+        salary: '',
+        start_date: '',
+        additional_notes: '',
+        job_id: pipeline.job_id,
+      };
+      const result = await generateOfferLetter(payload);
+      const letter = result.offer_letter || result.data?.offer_letter || '';
+      setGenerated(prev => ({
+        ...prev,
+        [pipeline.id]: { ...prev[pipeline.id], offerLetter: letter },
+      }));
+      setExpandedId(pipeline.id);
+      showToast('success', `✅ Offer letter generated for ${payload.candidate_name}!`);
+    } catch (err) {
+      showToast('error', getErrorMessage(err));
+    } finally {
+      setLoadingAction(null);
+    }
+  };
+
+  const handleGenerateOnboarding = async (pipeline) => {
+    const actionKey = `onboard-${pipeline.id}`;
+    setLoadingAction(actionKey);
+    try {
+      const payload = {
+        candidate_id: pipeline.candidate?.id || pipeline.candidate_id,
+        candidate_name: pipeline.candidate?.name || `Candidate #${pipeline.candidate_id}`,
+        job_title: pipeline.job?.role_name || 'the assigned role',
+        company_name: approvedJob?.company || 'Our Company',
+        start_date: '',
+        job_id: pipeline.job_id,
       };
       const result = await generateOnboarding(payload);
       const checklist = result.checklist || result.data?.checklist || [];
-      setOnboardingChecklist(checklist);
-      setOnboardingGenerated(true);
-      setActiveTab('onboarding');
-      showToast('success', '✅ Onboarding checklist generated!');
+      setGenerated(prev => ({
+        ...prev,
+        [pipeline.id]: { ...prev[pipeline.id], checklist },
+      }));
+      setExpandedId(pipeline.id);
+      showToast('success', `✅ Onboarding checklist generated for ${payload.candidate_name}!`);
     } catch (err) {
       showToast('error', getErrorMessage(err));
     } finally {
-      setLoadingOnboarding(false);
+      setLoadingAction(null);
     }
   };
 
-  const handlePrint = () => {
-    window.print();
+  const handleCopy = (text) => {
+    navigator.clipboard.writeText(text);
+    showToast('success', 'Copied to clipboard!');
   };
 
-  const handleCopyOffer = () => {
-    navigator.clipboard.writeText(offerLetter);
-    showToast('success', 'Offer letter copied to clipboard!');
-  };
-
-  if (loadingOffer) return <LoadingOverlay message="Drafting offer letter with AI..." />;
-  if (loadingOnboarding) return <LoadingOverlay message="Building onboarding checklist..." />;
+  if (loading) return <LoadingOverlay message="Loading onboarding candidates..." />;
 
   return (
     <div>
       <SectionHeader
         icon="🎉"
         title="Offer & Onboarding"
-        subtitle="Generate a formal offer letter and structured onboarding checklist for the selected candidate."
+        subtitle="Generate offer letters and onboarding checklists for all approved candidates."
       />
 
-      {/* Candidate Info Banner */}
-      {selectedCandidate && (
-        <div style={{
-          background: 'linear-gradient(135deg, rgba(99,102,241,0.1), rgba(16,185,129,0.1))',
-          border: '1px solid rgba(99,102,241,0.25)',
-          borderRadius: 12,
-          padding: '1rem 1.25rem',
-          marginBottom: '1.5rem',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '1rem',
-          flexWrap: 'wrap',
-        }}>
-          <div style={{
-            width: 44, height: 44, borderRadius: '50%',
-            background: 'linear-gradient(135deg,#6366f1,#10b981)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: '1.2rem', fontWeight: 800,
-          }}>
-            {selectedCandidate.name?.[0]?.toUpperCase() || '?'}
-          </div>
-          <div style={{ flex: 1 }}>
-            <div style={{ fontWeight: 700, fontSize: '1rem' }}>{selectedCandidate.name}</div>
-            <div style={{ color: '#94a3b8', fontSize: '0.85rem' }}>{selectedCandidate.email}</div>
-          </div>
-          <span style={{
-            background: 'rgba(16,185,129,0.15)', border: '1px solid rgba(16,185,129,0.3)',
-            color: '#10b981', borderRadius: 999, padding: '0.25rem 0.75rem',
-            fontSize: '0.8rem', fontWeight: 700,
-          }}>🎉 Offer Extended</span>
-        </div>
-      )}
-
-      {/* Offer Details Form */}
-      <div className="card" style={{ marginBottom: '1.5rem' }}>
-        <h2 style={{ fontSize: '1rem', fontWeight: 700, marginBottom: '1.25rem', color: '#e2e8f0' }}>
-          📝 Offer Details
-        </h2>
-        <div className="form-grid">
-          <div className="form-group">
-            <label className="form-label">Candidate Name *</label>
-            <input className="form-input" placeholder="Full name"
-              value={offerForm.candidate_name}
-              onChange={e => setOfferForm(p => ({ ...p, candidate_name: e.target.value }))} />
-          </div>
-          <div className="form-group">
-            <label className="form-label">Candidate Email</label>
-            <input className="form-input" type="email" placeholder="email@example.com"
-              value={offerForm.candidate_email}
-              onChange={e => setOfferForm(p => ({ ...p, candidate_email: e.target.value }))} />
-          </div>
-          <div className="form-group">
-            <label className="form-label">Job Title *</label>
-            <input className="form-input" placeholder="e.g. Python Intern"
-              value={offerForm.job_title}
-              onChange={e => setOfferForm(p => ({ ...p, job_title: e.target.value }))} />
-          </div>
-          <div className="form-group">
-            <label className="form-label">Company Name *</label>
-            <input className="form-input" placeholder="e.g. ABC Technologies"
-              value={offerForm.company_name}
-              onChange={e => setOfferForm(p => ({ ...p, company_name: e.target.value }))} />
-          </div>
-          <div className="form-group">
-            <label className="form-label">Salary / Stipend</label>
-            <input className="form-input" placeholder="e.g. ₹25,000/month"
-              value={offerForm.salary}
-              onChange={e => setOfferForm(p => ({ ...p, salary: e.target.value }))} />
-          </div>
-          <div className="form-group">
-            <label className="form-label">Start Date</label>
-            <input className="form-input" type="date"
-              value={offerForm.start_date}
-              onChange={e => setOfferForm(p => ({ ...p, start_date: e.target.value }))} />
-          </div>
-        </div>
-        <div className="form-group">
-          <label className="form-label">Additional Notes (Optional)</label>
-          <textarea className="form-textarea" rows={2}
-            placeholder="Any extra clauses, perks, or notes to include in the letter..."
-            value={offerForm.additional_notes}
-            onChange={e => setOfferForm(p => ({ ...p, additional_notes: e.target.value }))} />
-        </div>
-
-        <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', marginTop: '1rem' }}>
-          <button className="btn btn-primary" onClick={handleGenerateOffer}>
-            📄 Generate Offer Letter
-          </button>
-          <button className="btn btn-secondary" onClick={handleGenerateOnboarding}>
-            📋 Generate Onboarding Checklist
-          </button>
-        </div>
+      <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '1rem' }}>
+        <button className="btn btn-secondary btn-sm" onClick={fetchCandidates}>🔄 Refresh</button>
       </div>
 
-      {/* Output Tabs */}
-      {(offerGenerated || onboardingGenerated) && (
-        <div className="card">
-          {/* Tab Header */}
-          <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1.5rem', borderBottom: '1px solid rgba(255,255,255,0.08)', paddingBottom: '0.75rem' }}>
-            {offerGenerated && (
-              <button
-                onClick={() => setActiveTab('offer')}
-                style={{
-                  padding: '0.4rem 1rem', borderRadius: 8, border: 'none', cursor: 'pointer',
-                  fontWeight: 600, fontSize: '0.875rem',
-                  background: activeTab === 'offer' ? 'rgba(99,102,241,0.2)' : 'transparent',
-                  color: activeTab === 'offer' ? '#818cf8' : '#94a3b8',
-                  borderBottom: activeTab === 'offer' ? '2px solid #6366f1' : '2px solid transparent',
-                  transition: 'all 0.2s',
-                }}
-              >
-                📄 Offer Letter
-              </button>
-            )}
-            {onboardingGenerated && (
-              <button
-                onClick={() => setActiveTab('onboarding')}
-                style={{
-                  padding: '0.4rem 1rem', borderRadius: 8, border: 'none', cursor: 'pointer',
-                  fontWeight: 600, fontSize: '0.875rem',
-                  background: activeTab === 'onboarding' ? 'rgba(16,185,129,0.2)' : 'transparent',
-                  color: activeTab === 'onboarding' ? '#34d399' : '#94a3b8',
-                  borderBottom: activeTab === 'onboarding' ? '2px solid #10b981' : '2px solid transparent',
-                  transition: 'all 0.2s',
-                }}
-              >
-                📋 Onboarding Checklist
-              </button>
-            )}
-          </div>
-
-          {/* Offer Letter Tab */}
-          {activeTab === 'offer' && offerLetter && (
-            <div>
-              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.5rem', marginBottom: '1rem' }}>
-                <button className="btn btn-secondary btn-sm" onClick={handleCopyOffer}>📋 Copy</button>
-                <button className="btn btn-secondary btn-sm" onClick={handlePrint}>🖨️ Print</button>
-                <button className="btn btn-secondary btn-sm" onClick={handleGenerateOffer}>🔄 Regenerate</button>
-              </div>
-              <div style={{
-                background: 'rgba(255,255,255,0.03)',
-                border: '1px solid rgba(255,255,255,0.08)',
-                borderRadius: 10,
-                padding: '2rem',
-                fontFamily: '"Georgia", serif',
-                fontSize: '0.95rem',
-                lineHeight: 1.75,
-                color: '#e2e8f0',
-                whiteSpace: 'pre-wrap',
-                maxHeight: 600,
-                overflowY: 'auto',
-              }}>
-                {offerLetter}
-              </div>
-            </div>
-          )}
-
-          {/* Onboarding Checklist Tab */}
-          {activeTab === 'onboarding' && (
-            <div>
-              {onboardingChecklist.length === 0 ? (
-                <EmptyState icon="📋" title="No checklist generated" subtitle="Click 'Generate Onboarding Checklist' above." />
-              ) : (
-                <div>
-                  <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '1rem' }}>
-                    <button className="btn btn-secondary btn-sm" onClick={handleGenerateOnboarding}>🔄 Regenerate</button>
-                  </div>
-                  {onboardingChecklist.map((section, si) => (
-                    <ChecklistSection key={si} section={section} />
-                  ))}
-                </div>
-              )}
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* No output yet */}
-      {!offerGenerated && !onboardingGenerated && (
+      {candidates.length === 0 ? (
         <div className="card">
           <EmptyState
-            icon="📄"
-            title="Nothing generated yet"
-            subtitle="Fill in the offer details above and click 'Generate Offer Letter' or 'Generate Onboarding Checklist'."
+            icon="📭"
+            title="No candidates ready for onboarding"
+            subtitle="Candidates appear here after being approved in the Approval Center."
           />
+        </div>
+      ) : (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          {candidates.map(pipeline => {
+            const cand = pipeline.candidate || {};
+            const job = pipeline.job || {};
+            const pipeGenerated = generated[pipeline.id] || {};
+            const isExpanded = expandedId === pipeline.id;
+            const hasOffer = !!pipeGenerated.offerLetter;
+            const hasChecklist = pipeGenerated.checklist?.length > 0;
+
+            return (
+              <div key={pipeline.id} className="card" style={{ transition: 'all 0.3s' }}>
+                {/* ─── Candidate Row ─────────────────────────────────── */}
+                <div style={{
+                  display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap',
+                }}>
+                  {/* Avatar */}
+                  <div style={{
+                    width: 48, height: 48, borderRadius: '50%',
+                    background: 'linear-gradient(135deg,#6366f1,#10b981)',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    fontSize: '1.25rem', fontWeight: 800, flexShrink: 0,
+                    color: '#fff',
+                  }}>
+                    {cand.name?.[0]?.toUpperCase() || '?'}
+                  </div>
+
+                  {/* Info */}
+                  <div style={{ flex: 1, minWidth: 160 }}>
+                    <div style={{ fontWeight: 700, fontSize: '1rem' }}>
+                      {cand.name || `Candidate #${pipeline.candidate_id}`}
+                    </div>
+                    <div style={{ color: '#94a3b8', fontSize: '0.82rem' }}>
+                      {cand.email || '—'}
+                    </div>
+                    <div style={{ color: '#64748b', fontSize: '0.75rem', marginTop: 2 }}>
+                      {job.role_name || 'N/A'} • Pipeline #{pipeline.id}
+                    </div>
+                  </div>
+
+                  {/* Status badges */}
+                  <div style={{ display: 'flex', gap: '0.4rem', alignItems: 'center', flexWrap: 'wrap' }}>
+                    <span style={{
+                      background: 'rgba(16,185,129,0.15)', border: '1px solid rgba(16,185,129,0.3)',
+                      color: '#10b981', borderRadius: 999, padding: '0.2rem 0.65rem',
+                      fontSize: '0.72rem', fontWeight: 700,
+                    }}>
+                      ✅ {pipeline.status}
+                    </span>
+                    {hasOffer && (
+                      <span style={{
+                        background: 'rgba(99,102,241,0.12)', border: '1px solid rgba(99,102,241,0.25)',
+                        color: '#818cf8', borderRadius: 999, padding: '0.2rem 0.55rem',
+                        fontSize: '0.68rem', fontWeight: 600,
+                      }}>📄 Offer Ready</span>
+                    )}
+                    {hasChecklist && (
+                      <span style={{
+                        background: 'rgba(245,158,11,0.12)', border: '1px solid rgba(245,158,11,0.25)',
+                        color: '#f59e0b', borderRadius: 999, padding: '0.2rem 0.55rem',
+                        fontSize: '0.68rem', fontWeight: 600,
+                      }}>📋 Checklist Ready</span>
+                    )}
+                  </div>
+
+                  {/* Action buttons */}
+                  <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                    <button
+                      className="btn btn-primary btn-sm"
+                      disabled={loadingAction === `offer-${pipeline.id}`}
+                      onClick={() => handleGenerateOffer(pipeline)}
+                      style={{ whiteSpace: 'nowrap' }}
+                    >
+                      {loadingAction === `offer-${pipeline.id}` ? '⏳ Generating...' : '📄 Generate Offer'}
+                    </button>
+                    <button
+                      className="btn btn-secondary btn-sm"
+                      disabled={loadingAction === `onboard-${pipeline.id}`}
+                      onClick={() => handleGenerateOnboarding(pipeline)}
+                      style={{ whiteSpace: 'nowrap' }}
+                    >
+                      {loadingAction === `onboard-${pipeline.id}` ? '⏳ Generating...' : '📋 Onboarding Checklist'}
+                    </button>
+                    {(hasOffer || hasChecklist) && (
+                      <button
+                        className="btn btn-secondary btn-sm"
+                        onClick={() => setExpandedId(isExpanded ? null : pipeline.id)}
+                        style={{ minWidth: 36, padding: '0.3rem 0.5rem' }}
+                      >
+                        {isExpanded ? '▲' : '▼'}
+                      </button>
+                    )}
+                  </div>
+                </div>
+
+                {/* ─── Expanded: Generated Content ────────────────────── */}
+                {isExpanded && (hasOffer || hasChecklist) && (
+                  <div style={{
+                    marginTop: '1.25rem', paddingTop: '1rem',
+                    borderTop: '1px solid rgba(255,255,255,0.06)',
+                  }}>
+                    {/* Tab bar */}
+                    <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem' }}>
+                      {hasOffer && (
+                        <TabButton
+                          label="📄 Offer Letter"
+                          active={!hasChecklist || true}
+                          color="#6366f1"
+                        />
+                      )}
+                    </div>
+
+                    {/* Offer letter */}
+                    {hasOffer && (
+                      <div style={{ marginBottom: hasChecklist ? '1.5rem' : 0 }}>
+                        <div style={{
+                          display: 'flex', justifyContent: 'space-between',
+                          alignItems: 'center', marginBottom: '0.75rem',
+                        }}>
+                          <h3 style={{ fontSize: '0.9rem', fontWeight: 700, color: '#818cf8', margin: 0 }}>
+                            📄 Offer Letter
+                          </h3>
+                          <div style={{ display: 'flex', gap: '0.4rem' }}>
+                            <button className="btn btn-secondary btn-sm" onClick={() => handleCopy(pipeGenerated.offerLetter)}>
+                              📋 Copy
+                            </button>
+                            <button className="btn btn-secondary btn-sm" onClick={() => window.print()}>
+                              🖨️ Print
+                            </button>
+                            <button className="btn btn-secondary btn-sm" onClick={() => handleGenerateOffer(pipeline)}>
+                              🔄 Regenerate
+                            </button>
+                          </div>
+                        </div>
+                        <div style={{
+                          background: 'rgba(255,255,255,0.03)',
+                          border: '1px solid rgba(255,255,255,0.08)',
+                          borderRadius: 10, padding: '1.5rem',
+                          fontFamily: '"Georgia", serif',
+                          fontSize: '0.92rem', lineHeight: 1.75,
+                          color: '#e2e8f0', whiteSpace: 'pre-wrap',
+                          maxHeight: 500, overflowY: 'auto',
+                        }}>
+                          {pipeGenerated.offerLetter}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Onboarding checklist */}
+                    {hasChecklist && (
+                      <div>
+                        <div style={{
+                          display: 'flex', justifyContent: 'space-between',
+                          alignItems: 'center', marginBottom: '0.75rem',
+                        }}>
+                          <h3 style={{ fontSize: '0.9rem', fontWeight: 700, color: '#34d399', margin: 0 }}>
+                            📋 Onboarding Checklist
+                          </h3>
+                          <button className="btn btn-secondary btn-sm" onClick={() => handleGenerateOnboarding(pipeline)}>
+                            🔄 Regenerate
+                          </button>
+                        </div>
+                        {pipeGenerated.checklist.map((section, si) => (
+                          <ChecklistSection key={si} section={section} />
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
       )}
 
@@ -324,10 +307,28 @@ export default function OfferOnboarding() {
   );
 }
 
+
+/* ─── Helper Components ──────────────────────────────────────────────────── */
+
+function TabButton({ label, active, color }) {
+  return (
+    <span style={{
+      padding: '0.3rem 0.75rem', borderRadius: 8,
+      fontSize: '0.8rem', fontWeight: 600,
+      background: active ? `${color}22` : 'transparent',
+      color: active ? color : '#94a3b8',
+      borderBottom: active ? `2px solid ${color}` : '2px solid transparent',
+    }}>
+      {label}
+    </span>
+  );
+}
+
+
 function ChecklistSection({ section }) {
   const [expanded, setExpanded] = useState(true);
 
-  // Support both object-based sections and plain string arrays
+  // Support plain string items
   if (typeof section === 'string') {
     return (
       <div style={{

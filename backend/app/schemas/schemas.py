@@ -44,16 +44,26 @@ class ApprovalAction(BaseModel):
 
 # --- Offer Letter ---
 class OfferLetterRequest(BaseModel):
-    candidate_id: int
+    candidate_id: Optional[int] = None
+    candidate_name: str
+    candidate_email: Optional[str] = None
+    job_title: str
     company_name: str
+    salary: Optional[str] = None
+    salary_range: Optional[str] = None  # backward compat alias
     start_date: Optional[str] = None
-    salary_range: Optional[str] = None
+    additional_notes: Optional[str] = None
+    job_id: Optional[int] = None
 
 
 # --- Onboarding ---
 class OnboardingRequest(BaseModel):
-    candidate_id: int
+    candidate_id: Optional[int] = None
+    candidate_name: str
+    job_title: Optional[str] = None
     company_name: str
+    start_date: Optional[str] = None
+    job_id: Optional[int] = None
 
 # --- Rubric ---
 class RubricBase(BaseModel):
@@ -149,6 +159,10 @@ class CandidateScoreBase(BaseModel):
 class CandidateScoreORM(CandidateScoreBase):
     id: int
     created_at: datetime
+    name: Optional[str] = None
+    email: Optional[str] = None
+    parsed_skills: Optional[List[str]] = []
+    pipeline_status: Optional[str] = "Not Evaluated"
 
     class Config:
         from_attributes = True

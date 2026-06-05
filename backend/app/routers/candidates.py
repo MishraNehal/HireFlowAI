@@ -28,7 +28,31 @@ def list_candidates(db: Session = Depends(get_db)):
 def get_scores_by_job(job_id: int = Query(..., description="Job ID to fetch scores for"), db: Session = Depends(get_db)):
     """Return all candidate scores for a given job_id (used by the ranking page)."""
     scores = db.query(CandidateScore).filter(CandidateScore.job_id == job_id).all()
-    return scores
+    results = []
+    for s in scores:
+        candidate = s.candidate
+        pipeline = db.query(InterviewPipeline).filter(
+            InterviewPipeline.candidate_id == s.candidate_id,
+            InterviewPipeline.job_id == s.job_id
+        ).first()
+        pipeline_status = pipeline.status if pipeline else "Not Evaluated"
+        results.append({
+            "id": s.id,
+            "candidate_id": s.candidate_id,
+            "job_id": s.job_id,
+            "total_score": s.total_score,
+            "skills_score": s.skills_score,
+            "experience_score": s.experience_score,
+            "projects_score": s.projects_score,
+            "jd_match_score": s.jd_match_score,
+            "breakdown_notes": s.breakdown_notes,
+            "created_at": s.created_at,
+            "name": candidate.name if candidate else "Unknown Candidate",
+            "email": candidate.email if candidate else "",
+            "parsed_skills": candidate.parsed_skills if candidate else [],
+            "pipeline_status": pipeline_status
+        })
+    return results
 
 @router.get("/{candidate_id}", response_model=schemas.CandidateORM)
 def get_candidate(candidate_id: int, db: Session = Depends(get_db)):
@@ -137,19 +161,32 @@ def evaluate_candidate_for_job(candidate_id: int, job_id: int, db: Session = Dep
         jd_responsibilities=job.responsibilities or ""
     )
 
-    # 4. Save Candidate Score
-    db_score = CandidateScore(
-        candidate_id=candidate.id,
-        job_id=job.id,
-        total_score=evaluation.get("total_score", 50.0),
-        skills_score=evaluation.get("skills_score", 50.0),
-        experience_score=evaluation.get("experience_score", 50.0),
-        projects_score=evaluation.get("projects_score", 50.0),
-        jd_match_score=evaluation.get("jd_match_score", 50.0),
-        breakdown_notes=evaluation.get("breakdown_notes", "")
-    )
-    
-    db.add(db_score)
+    # 4. Create or Update Candidate Score
+    db_score = db.query(CandidateScore).filter(
+        CandidateScore.candidate_id == candidate.id,
+        CandidateScore.job_id == job.id
+    ).first()
+
+    if not db_score:
+        db_score = CandidateScore(
+            candidate_id=candidate.id,
+            job_id=job.id,
+            total_score=evaluation.get("total_score", 50.0),
+            skills_score=evaluation.get("skills_score", 50.0),
+            experience_score=evaluation.get("experience_score", 50.0),
+            projects_score=evaluation.get("projects_score", 50.0),
+            jd_match_score=evaluation.get("jd_match_score", 50.0),
+            breakdown_notes=evaluation.get("breakdown_notes", "")
+        )
+        db.add(db_score)
+    else:
+        db_score.total_score = evaluation.get("total_score", 50.0)
+        db_score.skills_score = evaluation.get("skills_score", 50.0)
+        db_score.experience_score = evaluation.get("experience_score", 50.0)
+        db_score.projects_score = evaluation.get("projects_score", 50.0)
+        db_score.jd_match_score = evaluation.get("jd_match_score", 50.0)
+        db_score.breakdown_notes = evaluation.get("breakdown_notes", "")
+
     db.commit()
     db.refresh(db_score)
 
@@ -209,4 +246,29 @@ def evaluate_candidate_for_job(candidate_id: int, job_id: int, db: Session = Dep
 
 @router.get("/{candidate_id}/scores", response_model=List[schemas.CandidateScoreORM])
 def get_candidate_scores(candidate_id: int, db: Session = Depends(get_db)):
-    return db.query(CandidateScore).filter(CandidateScore.candidate_id == candidate_id).all()
+    scores = db.query(CandidateScore).filter(CandidateScore.candidate_id == candidate_id).all()
+    results = []
+    for s in scores:
+        candidate = s.candidate
+        pipeline = db.query(InterviewPipeline).filter(
+            InterviewPipeline.candidate_id == s.candidate_id,
+            InterviewPipeline.job_id == s.job_id
+        ).first()
+        pipeline_status = pipeline.status if pipeline else "Not Evaluated"
+        results.append({
+            "id": s.id,
+            "candidate_id": s.candidate_id,
+            "job_id": s.job_id,
+            "total_score": s.total_score,
+            "skills_score": s.skills_score,
+            "experience_score": s.experience_score,
+            "projects_score": s.projects_score,
+            "jd_match_score": s.jd_match_score,
+            "breakdown_notes": s.breakdown_notes,
+            "created_at": s.created_at,
+            "name": candidate.name if candidate else "Unknown Candidate",
+            "email": candidate.email if candidate else "",
+            "parsed_skills": candidate.parsed_skills if candidate else [],
+            "pipeline_status": pipeline_status
+        })
+    return results

@@ -4,7 +4,7 @@ import { getCandidateScores } from '../services/api';
 import { SectionHeader, CandidateCard, LoadingOverlay } from '../components/UI';
 
 export default function CandidateRanking() {
-  const { approvedJob, candidateScores, setCandidateScores, goNext, goPrev, showToast } = useHireFlow();
+  const { approvedJob, candidateScores, setCandidateScores, uploadedCandidates, goNext, goPrev, showToast } = useHireFlow();
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -16,7 +16,9 @@ export default function CandidateRanking() {
     setLoading(true);
     try {
       const scores = await getCandidateScores(approvedJob.id);
-      setCandidateScores(scores);
+      const currentSessionIds = uploadedCandidates.map(c => c.candidate?.id || c.id);
+      const filteredScores = currentSessionIds.length > 0 ? scores.filter(s => currentSessionIds.includes(s.candidate_id)) : scores;
+      setCandidateScores(filteredScores);
     } catch (err) {
       showToast('error', 'Failed to load candidate scores.');
     } finally { setLoading(false); }

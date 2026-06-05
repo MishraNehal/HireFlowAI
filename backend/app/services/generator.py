@@ -13,23 +13,15 @@ def generate_rubric_and_questions(
     responsibilities: str
 ) -> Dict[str, Any]:
     """
-    Retrieves candidate questions from RAG, combines them with Job Description metadata,
-    and calls Nexus LLM to generate the global evaluation rubric and exactly 5 customized interview questions.
+    Calls Nexus LLM to generate the global evaluation rubric and exactly 5 customized interview questions
+    based ONLY on the provided Job Description details.
     """
-    # 1. Retrieve raw questions via RAG
-    rag_questions = rag_service.get_questions_for_role(role_name, skills_required, limit=5)
-    
-    # Format questions to show the LLM
-    questions_context = ""
-    for idx, q in enumerate(rag_questions):
-        questions_context += f"Question {idx+1}: {q['question_text']}\nExpected Answer: {q['expected_answer']}\nRubric: {json.dumps(q['eval_rubric'])}\n\n"
-
     system_prompt = (
         "You are an elite AI recruiting director. You generate robust, tailored evaluation rubrics and structured interview questions.\n"
-        "Given the Job Description details and a list of reference questions retrieved from our knowledge base, you must produce:\n"
+        "Given the Job Description details, you must produce:\n"
         "1. A global candidate evaluation rubric defining criteria for candidate scoring. This must have exactly 4 keys: 'skills', 'experience', 'projects', and 'jd_match'. "
         "Each key must map to an object with 'weight' (float, total sum of all 4 weights MUST be exactly 1.0) and 'description' (string).\n"
-        "2. A list of exactly 5 interview questions. You can refine or adapt the reference questions, or write new ones if needed, to fit the role perfectly. "
+        "2. A list of exactly 5 interview questions based exclusively on the provided Job Description. "
         "Each question object must contain:\n"
         "   - 'question_text': Clear, open-ended question (string)\n"
         "   - 'expected_answer': Detailed answer indicating high performance (string)\n"
@@ -41,9 +33,7 @@ def generate_rubric_and_questions(
         f"JOB DESCRIPTION:\n"
         f"Role: {role_name}\n"
         f"Required Skills: {', '.join(skills_required)}\n"
-        f"Responsibilities: {responsibilities}\n\n"
-        f"REFERENCE QUESTIONS (incorporate and adapt these where appropriate):\n"
-        f"{questions_context}\n"
+        f"Responsibilities: {responsibilities}\n"
     )
 
     try:
@@ -58,7 +48,7 @@ def generate_rubric_and_questions(
     except Exception as e:
         logger.error(f"Failed to generate rubric and questions via LLM. Error: {str(e)}")
         # Return fallback structures if LLM fails
-        return get_fallback_rubric_and_questions(role_name, skills_required, rag_questions)
+        return get_fallback_rubric_and_questions(role_name, skills_required, [])
 
 def get_fallback_rubric_and_questions(
     role_name: str, 

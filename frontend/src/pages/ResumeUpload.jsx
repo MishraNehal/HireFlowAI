@@ -30,21 +30,23 @@ export default function ResumeUpload() {
     });
   };
 
-  // Score all candidates already in the DB for this job
+  // Score all candidates uploaded in the current session
   const handleScoreAll = async () => {
     if (!approvedJob?.id) return;
     setScoring(true);
     try {
-      const allCandidates = await listCandidates();
       let scored = 0;
-      for (const cand of allCandidates) {
+      for (const c of uploadedCandidates) {
+        const candidateId = c.candidate?.id || c.id;
         try {
-          await evaluateCandidate(cand.id, approvedJob.id);
+          await evaluateCandidate(candidateId, approvedJob.id);
           scored++;
         } catch (e) { /* skip already-scored or errors */ }
       }
       const scores = await getCandidateScores(approvedJob.id);
-      setCandidateScores(scores);
+      const currentSessionIds = uploadedCandidates.map(c => c.candidate?.id || c.id);
+      const filteredScores = currentSessionIds.length > 0 ? scores.filter(s => currentSessionIds.includes(s.candidate_id)) : scores;
+      setCandidateScores(filteredScores);
       showToast('success', `Scored ${scored} candidate(s) successfully!`);
     } catch (e) {
       showToast('error', 'Failed to score candidates.');
@@ -85,7 +87,11 @@ export default function ResumeUpload() {
     // Fetch updated scores
     try {
       const scores = await getCandidateScores(approvedJob.id);
-      setCandidateScores(scores);
+      
+      // Filter scores to only show the ones uploaded in THIS session
+      const currentSessionIds = [...uploadedCandidates, ...successful].map(c => c.candidate?.id || c.id);
+      const filteredScores = currentSessionIds.length > 0 ? scores.filter(s => currentSessionIds.includes(s.candidate_id)) : scores;
+      setCandidateScores(filteredScores);
     } catch (e) { /* non-fatal */ }
 
     showToast('success', `${successful.length}/${files.length} resumes processed & scored.`);
