@@ -1,0 +1,47 @@
+# Web Framework
+fastapi==0.115.6
+uvicorn[standard]==0.32.1
+python-multipart==0.0.12
+httpx==0.27.2
+
+# Pydantic
+pydantic==2.10.3
+pydantic-settings==2.6.1
+
+# Database
+sqlalchemy==2.0.36
+alembic==1.14.0
+psycopg2-binary==2.9.10
+pgvector==0.3.6
+
+# Auth
+python-jose[cryptography]==3.3.0
+svix==1.35.0
+
+# Task Queue
+celery==5.4.0
+redis==5.2.1
+
+# AI / LLM
+openai==1.59.3
+langchain==0.3.13
+langgraph==0.2.59
+langsmith==0.2.7
+sentence-transformers==3.3.1
+
+# Resume Parsing
+PyMuPDF==1.25.1
+
+# File Storage
+boto3==1.35.87
+
+# Email & SMS
+sendgrid==6.11.0
+twilio==9.4.0
+
+# PDF Generation
+reportlab==4.2.5
+
+# Utilities
+python-dotenv==1.0.1
+websockets==14.1
