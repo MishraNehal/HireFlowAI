@@ -45,7 +45,12 @@ def verify_clerk_token(token: str) -> dict:
             raise HTTPException(status_code=401, detail="Public key not found")
 
         public_key = jwk.construct(key_data)
-        claims = jwt.decode(token, public_key, algorithms=["RS256"])
+        claims = jwt.decode(
+            token,
+            public_key,
+            algorithms=["RS256"],
+            options={"leeway": 10},  # 10s clock skew tolerance for nbf/exp
+        )
         return claims
     except JWTError as e:
         raise HTTPException(status_code=401, detail=f"Invalid token: {e}")

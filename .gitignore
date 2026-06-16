@@ -38,3 +38,9 @@ Thumbs.db
 
 # Chroma (if used locally)
 chroma_db/
+
+# Local dev tools (downloaded vendor files)
+clerk.browser.js
+
+
+
