@@ -1,0 +1,233 @@
+[
+  {
+    "id": "col_001",
+    "name": "MANIT Bhopal",
+    "city": "Bhopal",
+    "state": "Madhya Pradesh",
+    "tier": "tier1",
+    "placement_email": "placements@manit.ac.in",
+    "tpo_name": "Training & Placement Officer",
+    "tpo_contact": "+91-755-4051000",
+    "historical_rating": 4.5
+  },
+  {
+    "id": "col_002",
+    "name": "SGSITS Indore",
+    "city": "Indore",
+    "state": "Madhya Pradesh",
+    "tier": "tier2",
+    "placement_email": "placements@sgsits.ac.in",
+    "tpo_name": "Training & Placement Officer",
+    "tpo_contact": "+91-731-2433400",
+    "historical_rating": 3.9
+  },
+  {
+    "id": "col_003",
+    "name": "IIT Indore",
+    "city": "Indore",
+    "state": "Madhya Pradesh",
+    "tier": "tier1",
+    "placement_email": "placement@iiti.ac.in",
+    "tpo_name": "Career Development Officer",
+    "tpo_contact": "+91-731-6603000",
+    "historical_rating": 4.8
+  },
+  {
+    "id": "col_004",
+    "name": "VIT Bhopal",
+    "city": "Bhopal",
+    "state": "Madhya Pradesh",
+    "tier": "tier2",
+    "placement_email": "placements@vitbhopal.ac.in",
+    "tpo_name": "Training & Placement Officer",
+    "tpo_contact": "+91-755-2632501",
+    "historical_rating": 3.7
+  },
+  {
+    "id": "col_005",
+    "name": "LNCT Bhopal",
+    "city": "Bhopal",
+    "state": "Madhya Pradesh",
+    "tier": "tier2",
+    "placement_email": "placements@lnct.ac.in",
+    "tpo_name": "Training & Placement Officer",
+    "tpo_contact": "+91-755-4242422",
+    "historical_rating": 3.5
+  },
+  {
+    "id": "col_006",
+    "name": "BITS Pilani",
+    "city": "Pilani",
+    "state": "Rajasthan",
+    "tier": "tier1",
+    "placement_email": "placement@pilani.bits-pilani.ac.in",
+    "tpo_name": "Practice School / Placement Unit",
+    "tpo_contact": "+91-1596-242210",
+    "historical_rating": 4.9
+  },
+  {
+    "id": "col_007",
+    "name": "RAIT Mumbai",
+    "city": "Navi Mumbai",
+    "state": "Maharashtra",
+    "tier": "tier2",
+    "placement_email": "placements@rait.ac.in",
+    "tpo_name": "Training & Placement Officer",
+    "tpo_contact": "+91-22-27701356",
+    "historical_rating": 3.8
+  },
+  {
+    "id": "col_008",
+    "name": "IIT Bombay",
+    "city": "Mumbai",
+    "state": "Maharashtra",
+    "tier": "tier1",
+    "placement_email": "placement@iitb.ac.in",
+    "tpo_name": "Career Development Cell",
+    "tpo_contact": "+91-22-25722545",
+    "historical_rating": 4.9
+  },
+  {
+    "id": "col_009",
+    "name": "IIT Delhi",
+    "city": "New Delhi",
+    "state": "Delhi",
+    "tier": "tier1",
+    "placement_email": "placement@iitd.ac.in",
+    "tpo_name": "Career Services Office",
+    "tpo_contact": "+91-11-26591738",
+    "historical_rating": 4.9
+  },
+  {
+    "id": "col_010",
+    "name": "SVNIT Surat",
+    "city": "Surat",
+    "state": "Gujarat",
+    "tier": "tier1",
+    "placement_email": "placement@svnit.ac.in",
+    "tpo_name": "Training & Placement Officer",
+    "tpo_contact": "+91-261-2201578",
+    "historical_rating": 4.3
+  },
+  {
+    "id": "col_011",
+    "name": "NIT Warangal",
+    "city": "Warangal",
+    "state": "Telangana",
+    "tier": "tier1",
+    "placement_email": "placement@nitw.ac.in",
+    "tpo_name": "Training & Placement Officer",
+    "tpo_contact": "+91-870-2462642",
+    "historical_rating": 4.5
+  },
+  {
+    "id": "col_012",
+    "name": "DA-IICT Gandhinagar",
+    "city": "Gandhinagar",
+    "state": "Gujarat",
+    "tier": "tier2",
+    "placement_email": "placement@daiict.ac.in",
+    "tpo_name": "Training & Placement Officer",
+    "tpo_contact": "+91-79-30510700",
+    "historical_rating": 4.1
+  },
+  {
+    "id": "col_013",
+    "name": "VJTI Mumbai",
+    "city": "Mumbai",
+    "state": "Maharashtra",
+    "tier": "tier2",
+    "placement_email": "placements@vjti.ac.in",
+    "tpo_name": "Training & Placement Officer",
+    "tpo_contact": "+91-22-24198101",
+    "historical_rating": 4.0
+  },
+  {
+    "id": "col_014",
+    "name": "PICT Pune",
+    "city": "Pune",
+    "state": "Maharashtra",
+    "tier": "tier2",
+    "placement_email": "placements@pict.edu",
+    "tpo_name": "Training & Placement Officer",
+    "tpo_contact": "+91-20-24371101",
+    "historical_rating": 3.9
+  },
+  {
+    "id": "col_015",
+    "name": "COEP Tech University Pune",
+    "city": "Pune",
+    "state": "Maharashtra",
+    "tier": "tier1",
+    "placement_email": "placement@coeptech.ac.in",
+    "tpo_name": "Training & Placement Officer",
+    "tpo_contact": "+91-20-25507000",
+    "historical_rating": 4.4
+  },
+  {
+    "id": "col_016",
+    "name": "IIIT Hyderabad",
+    "city": "Hyderabad",
+    "state": "Telangana",
+    "tier": "tier1",
+    "placement_email": "placements@iiit.ac.in",
+    "tpo_name": "Career Development Services",
+    "tpo_contact": "+91-40-66531000",
+    "historical_rating": 4.7
+  },
+  {
+    "id": "col_017",
+    "name": "Thapar Institute of Engineering & Technology",
+    "city": "Patiala",
+    "state": "Punjab",
+    "tier": "tier2",
+    "placement_email": "placements@thapar.edu",
+    "tpo_name": "Training & Placement Officer",
+    "tpo_contact": "+91-175-2393021",
+    "historical_rating": 4.0
+  },
+  {
+    "id": "col_018",
+    "name": "VIT Vellore",
+    "city": "Vellore",
+    "state": "Tamil Nadu",
+    "tier": "tier2",
+    "placement_email": "placement@vit.ac.in",
+    "tpo_name": "Training & Placement Officer",
+    "tpo_contact": "+91-416-2202020",
+    "historical_rating": 4.1
+  },
+  {
+    "id": "col_019",
+    "name": "Delhi Technological University",
+    "city": "New Delhi",
+    "state": "Delhi",
+    "tier": "tier1",
+    "placement_email": "placement@dtu.ac.in",
+    "tpo_name": "Training & Placement Officer",
+    "tpo_contact": "+91-11-27871018",
+    "historical_rating": 4.3
+  },
+  {
+    "id": "col_020",
+    "name": "Manipal Institute of Technology",
+    "city": "Manipal",
+    "state": "Karnataka",
+    "tier": "tier2",
+    "placement_email": "placements.mit@manipal.edu",
+    "tpo_name": "Training & Placement Officer",
+    "tpo_contact": "+91-820-2925000",
+    "historical_rating": 4.0
+  },
+  {
+    "id": "col_021",
+    "name": "Acropolis Institute of Technology and Research",
+    "city": "Indore",
+    "state": "Madhya Pradesh",
+    "tier": "tier2",
+    "placement_email": "placements@aitr.ac.in",
+    "tpo_name": "Training & Placement Officer",
+    "tpo_contact": "+91-731-4730000",
+    "historical_rating": 4.3
+  }
+]

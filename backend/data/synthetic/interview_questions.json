@@ -1,0 +1,727 @@
+[
+  {
+    "id": "q_python_001",
+    "role": "Python Intern",
+    "topic": "Data Types",
+    "difficulty": "easy",
+    "type": "mcq",
+    "question": "What is the output of type([]) in Python?",
+    "options": [
+      "list",
+      "tuple",
+      "dict",
+      "set"
+    ],
+    "answer": "list",
+    "explanation": "An empty pair of square brackets [] creates a list object in Python."
+  },
+  {
+    "id": "q_python_002",
+    "role": "Python Intern",
+    "topic": "Mutability",
+    "difficulty": "easy",
+    "type": "mcq",
+    "question": "Which of the following is immutable in Python?",
+    "options": [
+      "list",
+      "dict",
+      "tuple",
+      "set"
+    ],
+    "answer": "tuple",
+    "explanation": "Tuples cannot be modified after creation, unlike lists, dicts, and sets which are mutable."
+  },
+  {
+    "id": "q_python_003",
+    "role": "Python Intern",
+    "topic": "OOP",
+    "difficulty": "medium",
+    "type": "mcq",
+    "question": "What does the __init__ method do in a Python class?",
+    "options": [
+      "Destroys an instance",
+      "Initializes a new instance",
+      "Defines class-level methods",
+      "Imports modules"
+    ],
+    "answer": "Initializes a new instance",
+    "explanation": "__init__ is the constructor that runs automatically when a new object is created, setting up initial attribute values."
+  },
+  {
+    "id": "q_python_004",
+    "role": "Python Intern",
+    "topic": "Decorators",
+    "difficulty": "medium",
+    "type": "mcq",
+    "question": "What is the primary purpose of a decorator in Python?",
+    "options": [
+      "To decorate UI elements",
+      "To wrap a function and extend its behavior without modifying its source",
+      "To define a new class",
+      "To handle exceptions"
+    ],
+    "answer": "To wrap a function and extend its behavior without modifying its source",
+    "explanation": "Decorators take a function, wrap extra behavior around it (logging, timing, auth checks, etc.), and return the wrapped function."
+  },
+  {
+    "id": "q_python_005",
+    "role": "Python Intern",
+    "topic": "Memory Management",
+    "difficulty": "medium",
+    "type": "subjective",
+    "question": "Explain the difference between a deep copy and a shallow copy in Python.",
+    "options": null,
+    "answer": "A shallow copy creates a new outer object but keeps references to the same nested objects, so changes to nested mutable objects affect both copies. A deep copy recursively copies every nested object, so the two copies are fully independent.",
+    "explanation": "Candidates should mention copy.copy() vs copy.deepcopy() and give a concrete example with a list of lists."
+  },
+  {
+    "id": "q_python_006",
+    "role": "Python Intern",
+    "topic": "Exception Handling",
+    "difficulty": "easy",
+    "type": "mcq",
+    "question": "Which construct is used to handle exceptions in Python?",
+    "options": [
+      "try/except",
+      "catch/throw",
+      "handle/rescue",
+      "on/error"
+    ],
+    "answer": "try/except",
+    "explanation": "Python uses try/except blocks (optionally with else and finally) to catch and handle exceptions."
+  },
+  {
+    "id": "q_python_007",
+    "role": "Python Intern",
+    "topic": "Algorithms",
+    "difficulty": "medium",
+    "type": "coding",
+    "question": "Write a function is_palindrome(s) that returns True if the input string is a palindrome, ignoring case.",
+    "options": null,
+    "answer": "def is_palindrome(s):\n    s = s.lower()\n    return s == s[::-1]",
+    "explanation": "Look for correct case handling and use of slicing or two-pointer comparison; O(n) time is expected."
+  },
+  {
+    "id": "q_python_008",
+    "role": "Python Intern",
+    "topic": "Data Structures",
+    "difficulty": "medium",
+    "type": "mcq",
+    "question": "What is the average time complexity of accessing an element in a Python list by index?",
+    "options": [
+      "O(1)",
+      "O(n)",
+      "O(log n)",
+      "O(n^2)"
+    ],
+    "answer": "O(1)",
+    "explanation": "Python lists are implemented as dynamic arrays, so indexing is constant time."
+  },
+  {
+    "id": "q_python_009",
+    "role": "Python Intern",
+    "topic": "Concurrency",
+    "difficulty": "hard",
+    "type": "subjective",
+    "question": "Explain what the Global Interpreter Lock (GIL) is and how it affects multithreaded Python programs.",
+    "options": null,
+    "answer": "The GIL is a mutex that allows only one thread to execute Python bytecode at a time in CPython. This means CPU-bound multithreaded code does not get true parallelism, though I/O-bound code can still benefit from threading. Multiprocessing or async I/O are common workarounds.",
+    "explanation": "Strong answers mention CPU-bound vs I/O-bound workloads and at least one workaround (multiprocessing, asyncio, or C-extension release of the GIL)."
+  },
+  {
+    "id": "q_python_010",
+    "role": "Python Intern",
+    "topic": "Functions",
+    "difficulty": "easy",
+    "type": "mcq",
+    "question": "What does *args allow a Python function to accept?",
+    "options": [
+      "A variable number of positional arguments",
+      "A dictionary of keyword arguments",
+      "A single list argument only",
+      "A fixed number of arguments"
+    ],
+    "answer": "A variable number of positional arguments",
+    "explanation": "*args collects any number of extra positional arguments into a tuple inside the function."
+  },
+  {
+    "id": "q_frontend_001",
+    "role": "Frontend Developer",
+    "topic": "CSS",
+    "difficulty": "easy",
+    "type": "mcq",
+    "question": "Which CSS property changes the text color of an element?",
+    "options": [
+      "color",
+      "font-color",
+      "text-color",
+      "fg-color"
+    ],
+    "answer": "color",
+    "explanation": "The `color` property sets the foreground (text) color of an element."
+  },
+  {
+    "id": "q_frontend_002",
+    "role": "Frontend Developer",
+    "topic": "HTML",
+    "difficulty": "easy",
+    "type": "mcq",
+    "question": "Which HTML tag is used to create a hyperlink?",
+    "options": [
+      "<link>",
+      "<a>",
+      "<href>",
+      "<hyperlink>"
+    ],
+    "answer": "<a>",
+    "explanation": "The anchor tag <a> with an href attribute creates a hyperlink."
+  },
+  {
+    "id": "q_frontend_003",
+    "role": "Frontend Developer",
+    "topic": "JavaScript",
+    "difficulty": "medium",
+    "type": "mcq",
+    "question": "What does the '===' operator check for in JavaScript?",
+    "options": [
+      "Value only",
+      "Type only",
+      "Both value and type",
+      "Neither value nor type"
+    ],
+    "answer": "Both value and type",
+    "explanation": "Unlike '==', the strict equality operator '===' does not perform type coercion before comparing."
+  },
+  {
+    "id": "q_frontend_004",
+    "role": "Frontend Developer",
+    "topic": "React",
+    "difficulty": "medium",
+    "type": "mcq",
+    "question": "What is the purpose of the useEffect hook in React?",
+    "options": [
+      "To manage local component state",
+      "To perform side effects after render",
+      "To define component styling",
+      "To create context providers"
+    ],
+    "answer": "To perform side effects after render",
+    "explanation": "useEffect runs side effects like data fetching, subscriptions, or DOM manipulation after the component renders."
+  },
+  {
+    "id": "q_frontend_005",
+    "role": "Frontend Developer",
+    "topic": "CSS Layout",
+    "difficulty": "medium",
+    "type": "subjective",
+    "question": "Explain the difference between Flexbox and CSS Grid, and when you would use each.",
+    "options": null,
+    "answer": "Flexbox is one-dimensional and best for laying out items in a row or column (e.g. navbars, button groups). CSS Grid is two-dimensional and best for full page layouts where you need to control both rows and columns simultaneously.",
+    "explanation": "Look for the one-dimensional vs two-dimensional distinction and a concrete use case for each."
+  },
+  {
+    "id": "q_frontend_006",
+    "role": "Frontend Developer",
+    "topic": "CSS Box Model",
+    "difficulty": "easy",
+    "type": "mcq",
+    "question": "Which property controls the space between an element's border and its content?",
+    "options": [
+      "margin",
+      "padding",
+      "border-spacing",
+      "outline"
+    ],
+    "answer": "padding",
+    "explanation": "Padding is the space inside the border, between the border and the content."
+  },
+  {
+    "id": "q_frontend_007",
+    "role": "Frontend Developer",
+    "topic": "React",
+    "difficulty": "hard",
+    "type": "mcq",
+    "question": "What problem does React's virtual DOM primarily address?",
+    "options": [
+      "It eliminates the need for CSS",
+      "It minimizes direct, expensive DOM manipulation for better performance",
+      "It replaces JavaScript entirely",
+      "It handles server-side routing"
+    ],
+    "answer": "It minimizes direct, expensive DOM manipulation for better performance",
+    "explanation": "React diffs the virtual DOM against the previous version and applies only the minimal set of real DOM updates needed."
+  },
+  {
+    "id": "q_frontend_008",
+    "role": "Frontend Developer",
+    "topic": "JavaScript",
+    "difficulty": "medium",
+    "type": "coding",
+    "question": "Write a debounce(fn, delay) function that delays invoking fn until delay ms have passed since the last call.",
+    "options": null,
+    "answer": "function debounce(fn, delay) {\n  let timer;\n  return (...args) => {\n    clearTimeout(timer);\n    timer = setTimeout(() => fn(...args), delay);\n  };\n}",
+    "explanation": "Look for correct use of closures and clearTimeout/setTimeout to reset the timer on each call."
+  },
+  {
+    "id": "q_frontend_009",
+    "role": "Frontend Developer",
+    "topic": "Responsive Design",
+    "difficulty": "medium",
+    "type": "mcq",
+    "question": "Which CSS unit is relative to the viewport width?",
+    "options": [
+      "px",
+      "em",
+      "vw",
+      "pt"
+    ],
+    "answer": "vw",
+    "explanation": "1vw equals 1% of the viewport's width, making it useful for responsive sizing."
+  },
+  {
+    "id": "q_frontend_010",
+    "role": "Frontend Developer",
+    "topic": "Performance",
+    "difficulty": "hard",
+    "type": "subjective",
+    "question": "What are Core Web Vitals, and name two ways to improve Largest Contentful Paint (LCP)?",
+    "options": null,
+    "answer": "Core Web Vitals are Google's metrics for user experience: LCP (loading), CLS (visual stability), and INP/FID (interactivity). To improve LCP you can optimize and lazy-load images, use a CDN, reduce render-blocking CSS/JS, and preload critical resources.",
+    "explanation": "Strong answers name all three Core Web Vitals and give at least two concrete LCP optimizations."
+  },
+  {
+    "id": "q_data_001",
+    "role": "Data Analyst",
+    "topic": "SQL",
+    "difficulty": "easy",
+    "type": "mcq",
+    "question": "Which SQL clause filters rows after a GROUP BY aggregation?",
+    "options": [
+      "WHERE",
+      "HAVING",
+      "ORDER BY",
+      "LIMIT"
+    ],
+    "answer": "HAVING",
+    "explanation": "WHERE filters rows before aggregation; HAVING filters groups after aggregation."
+  },
+  {
+    "id": "q_data_002",
+    "role": "Data Analyst",
+    "topic": "SQL",
+    "difficulty": "easy",
+    "type": "mcq",
+    "question": "Which SQL keyword removes duplicate rows from a result set?",
+    "options": [
+      "UNIQUE",
+      "DISTINCT",
+      "FILTER",
+      "GROUP"
+    ],
+    "answer": "DISTINCT",
+    "explanation": "SELECT DISTINCT returns only unique rows from the result set."
+  },
+  {
+    "id": "q_data_003",
+    "role": "Data Analyst",
+    "topic": "Statistics",
+    "difficulty": "medium",
+    "type": "mcq",
+    "question": "At a 0.05 significance level, what does a p-value of 0.03 indicate?",
+    "options": [
+      "Fail to reject the null hypothesis",
+      "Reject the null hypothesis",
+      "The test is inconclusive",
+      "The sample size is too small"
+    ],
+    "answer": "Reject the null hypothesis",
+    "explanation": "Since 0.03 is less than the 0.05 threshold, the result is statistically significant and the null hypothesis is rejected."
+  },
+  {
+    "id": "q_data_004",
+    "role": "Data Analyst",
+    "topic": "Statistics",
+    "difficulty": "medium",
+    "type": "mcq",
+    "question": "Which measure of central tendency is most affected by outliers?",
+    "options": [
+      "Mean",
+      "Median",
+      "Mode",
+      "Range"
+    ],
+    "answer": "Mean",
+    "explanation": "The mean uses every value in its calculation, so extreme outliers pull it strongly in their direction."
+  },
+  {
+    "id": "q_data_005",
+    "role": "Data Analyst",
+    "topic": "SQL Joins",
+    "difficulty": "medium",
+    "type": "subjective",
+    "question": "Explain the difference between an INNER JOIN and a LEFT JOIN with an example.",
+    "options": null,
+    "answer": "An INNER JOIN returns only rows with matching keys in both tables. A LEFT JOIN returns all rows from the left table, with NULLs filled in for non-matching rows from the right table. Example: joining candidates to scores — a LEFT JOIN would show candidates with no score yet as NULL, while an INNER JOIN would exclude them entirely.",
+    "explanation": "Look for a concrete example showing what happens to unmatched rows in each join type."
+  },
+  {
+    "id": "q_data_006",
+    "role": "Data Analyst",
+    "topic": "Excel",
+    "difficulty": "easy",
+    "type": "mcq",
+    "question": "Which Excel function looks up a value in a table and returns a value from a specified column?",
+    "options": [
+      "VLOOKUP",
+      "SUMIF",
+      "CONCAT",
+      "COUNTA"
+    ],
+    "answer": "VLOOKUP",
+    "explanation": "VLOOKUP searches for a value in the first column of a range and returns a value from a specified column in the same row."
+  },
+  {
+    "id": "q_data_007",
+    "role": "Data Analyst",
+    "topic": "Pandas",
+    "difficulty": "medium",
+    "type": "coding",
+    "question": "Write Pandas code to compute the average value of column 'score', grouped by column 'department'.",
+    "options": null,
+    "answer": "df.groupby('department')['score'].mean()",
+    "explanation": "Look for correct use of groupby() followed by column selection and .mean()."
+  },
+  {
+    "id": "q_data_008",
+    "role": "Data Analyst",
+    "topic": "A/B Testing",
+    "difficulty": "hard",
+    "type": "mcq",
+    "question": "In an A/B test, what is a Type I error?",
+    "options": [
+      "Failing to detect a real effect",
+      "Incorrectly concluding there is an effect when there isn't one",
+      "Choosing the wrong sample size",
+      "Using the wrong metric"
+    ],
+    "answer": "Incorrectly concluding there is an effect when there isn't one",
+    "explanation": "A Type I error is a false positive — rejecting a true null hypothesis. A Type II error (false negative) is the opposite."
+  },
+  {
+    "id": "q_data_009",
+    "role": "Data Analyst",
+    "topic": "Data Visualization",
+    "difficulty": "medium",
+    "type": "mcq",
+    "question": "Which chart type best shows the distribution of a single numeric variable?",
+    "options": [
+      "Pie chart",
+      "Histogram",
+      "Scatter plot",
+      "Stacked bar chart"
+    ],
+    "answer": "Histogram",
+    "explanation": "A histogram bins continuous numeric data and shows the frequency of values in each bin, revealing the shape of the distribution."
+  },
+  {
+    "id": "q_data_010",
+    "role": "Data Analyst",
+    "topic": "Data Cleaning",
+    "difficulty": "hard",
+    "type": "subjective",
+    "question": "Describe your approach to handling missing values in a dataset before analysis.",
+    "options": null,
+    "answer": "First identify the extent and pattern of missingness (random vs systematic). Then choose an approach depending on context: drop rows/columns if missingness is small and random, impute using mean/median/mode or a model-based method for numeric data, or treat 'missing' as its own category for categorical data. Document whatever decision is made since it affects downstream conclusions.",
+    "explanation": "Strong answers mention diagnosing the missingness pattern before picking a fix, not jumping straight to mean imputation."
+  },
+  {
+    "id": "q_aiml_001",
+    "role": "AI/ML Intern",
+    "topic": "ML Basics",
+    "difficulty": "easy",
+    "type": "mcq",
+    "question": "Which type of learning uses labeled data to train a model?",
+    "options": [
+      "Unsupervised learning",
+      "Supervised learning",
+      "Reinforcement learning",
+      "Semi-random learning"
+    ],
+    "answer": "Supervised learning",
+    "explanation": "Supervised learning trains on input-output pairs where the correct label is already known."
+  },
+  {
+    "id": "q_aiml_002",
+    "role": "AI/ML Intern",
+    "topic": "ML Basics",
+    "difficulty": "easy",
+    "type": "mcq",
+    "question": "Which of these is a classification algorithm?",
+    "options": [
+      "Linear Regression",
+      "Logistic Regression",
+      "K-Means",
+      "PCA"
+    ],
+    "answer": "Logistic Regression",
+    "explanation": "Logistic Regression predicts discrete class labels using a sigmoid function, despite the name suggesting regression."
+  },
+  {
+    "id": "q_aiml_003",
+    "role": "AI/ML Intern",
+    "topic": "Model Evaluation",
+    "difficulty": "medium",
+    "type": "mcq",
+    "question": "What does high recall combined with low precision typically indicate?",
+    "options": [
+      "Many false positives",
+      "Many false negatives",
+      "A perfectly balanced model",
+      "Severe underfitting only"
+    ],
+    "answer": "Many false positives",
+    "explanation": "High recall means most actual positives are caught, but low precision means many of the predicted positives are actually negative — i.e. lots of false positives."
+  },
+  {
+    "id": "q_aiml_004",
+    "role": "AI/ML Intern",
+    "topic": "Overfitting",
+    "difficulty": "medium",
+    "type": "mcq",
+    "question": "Which technique helps reduce overfitting in a neural network?",
+    "options": [
+      "Increasing model depth indefinitely",
+      "Dropout",
+      "Removing all regularization",
+      "Shrinking the training set"
+    ],
+    "answer": "Dropout",
+    "explanation": "Dropout randomly disables neurons during training, preventing the network from over-relying on specific paths and improving generalization."
+  },
+  {
+    "id": "q_aiml_005",
+    "role": "AI/ML Intern",
+    "topic": "Bias-Variance",
+    "difficulty": "medium",
+    "type": "subjective",
+    "question": "Explain the bias-variance tradeoff in machine learning.",
+    "options": null,
+    "answer": "Bias is error from overly simplistic assumptions (underfitting); variance is error from being too sensitive to training data fluctuations (overfitting). Reducing bias often increases variance and vice versa, so the goal is to find a model complexity that minimizes total error on unseen data.",
+    "explanation": "Look for clear definitions of both terms and an explanation of why they trade off against each other."
+  },
+  {
+    "id": "q_aiml_006",
+    "role": "AI/ML Intern",
+    "topic": "Libraries",
+    "difficulty": "easy",
+    "type": "mcq",
+    "question": "Which Python library is primarily used for numerical array operations?",
+    "options": [
+      "NumPy",
+      "Flask",
+      "Requests",
+      "Pillow"
+    ],
+    "answer": "NumPy",
+    "explanation": "NumPy provides the core n-dimensional array object and fast numerical operations that most ML libraries are built on."
+  },
+  {
+    "id": "q_aiml_007",
+    "role": "AI/ML Intern",
+    "topic": "Algorithms",
+    "difficulty": "hard",
+    "type": "coding",
+    "question": "Implement a function accuracy(y_true, y_pred) that returns the fraction of correct predictions given two equal-length lists.",
+    "options": null,
+    "answer": "def accuracy(y_true, y_pred):\n    correct = sum(1 for a, b in zip(y_true, y_pred) if a == b)\n    return correct / len(y_true)",
+    "explanation": "Look for correct pairwise comparison and division by total count; edge case of empty input is a bonus discussion point."
+  },
+  {
+    "id": "q_aiml_008",
+    "role": "AI/ML Intern",
+    "topic": "Deep Learning",
+    "difficulty": "hard",
+    "type": "mcq",
+    "question": "What is the primary purpose of an activation function in a neural network?",
+    "options": [
+      "To normalize input data",
+      "To introduce non-linearity into the model",
+      "To reduce the number of parameters",
+      "To initialize weights"
+    ],
+    "answer": "To introduce non-linearity into the model",
+    "explanation": "Without non-linear activation functions, a stack of linear layers would collapse into a single linear transformation, unable to model complex patterns."
+  },
+  {
+    "id": "q_aiml_009",
+    "role": "AI/ML Intern",
+    "topic": "NLP",
+    "difficulty": "medium",
+    "type": "mcq",
+    "question": "What does 'tokenization' refer to in NLP?",
+    "options": [
+      "Encrypting text data",
+      "Splitting text into smaller units like words or subwords",
+      "Translating text between languages",
+      "Removing stop words"
+    ],
+    "answer": "Splitting text into smaller units like words or subwords",
+    "explanation": "Tokenization is typically the first preprocessing step, breaking raw text into tokens that a model can consume."
+  },
+  {
+    "id": "q_aiml_010",
+    "role": "AI/ML Intern",
+    "topic": "Model Selection",
+    "difficulty": "hard",
+    "type": "subjective",
+    "question": "How would you decide between a simple model like logistic regression and a complex model like a deep neural network for a given problem?",
+    "options": null,
+    "answer": "Consider dataset size (deep nets need more data), interpretability requirements, latency/deployment constraints, and whether the relationship is likely linear or highly non-linear. Start simple, establish a baseline, and only add complexity if it meaningfully improves validation performance.",
+    "explanation": "Strong answers mention starting with a simple baseline before reaching for a more complex model, not complexity for its own sake."
+  },
+  {
+    "id": "q_swe_001",
+    "role": "Software Engineer Intern",
+    "topic": "DSA",
+    "difficulty": "easy",
+    "type": "mcq",
+    "question": "What is the time complexity of binary search on a sorted array of size n?",
+    "options": [
+      "O(n)",
+      "O(log n)",
+      "O(n log n)",
+      "O(1)"
+    ],
+    "answer": "O(log n)",
+    "explanation": "Binary search halves the search space on each comparison, giving logarithmic time complexity."
+  },
+  {
+    "id": "q_swe_002",
+    "role": "Software Engineer Intern",
+    "topic": "DSA",
+    "difficulty": "easy",
+    "type": "mcq",
+    "question": "Which data structure follows LIFO (Last In, First Out) order?",
+    "options": [
+      "Queue",
+      "Stack",
+      "Heap",
+      "Linked List"
+    ],
+    "answer": "Stack",
+    "explanation": "A stack only allows insertion and removal from the same end, giving last-in-first-out behavior."
+  },
+  {
+    "id": "q_swe_003",
+    "role": "Software Engineer Intern",
+    "topic": "OOP",
+    "difficulty": "medium",
+    "type": "mcq",
+    "question": "What is polymorphism in object-oriented programming?",
+    "options": [
+      "Hiding implementation details from the caller",
+      "The ability of different classes to be used through a common interface",
+      "Combining data and methods into a single class",
+      "Creating multiple instances of the same class"
+    ],
+    "answer": "The ability of different classes to be used through a common interface",
+    "explanation": "Polymorphism lets objects of different classes respond to the same method call in class-specific ways, enabling code that works generically across types."
+  },
+  {
+    "id": "q_swe_004",
+    "role": "Software Engineer Intern",
+    "topic": "Git",
+    "difficulty": "medium",
+    "type": "mcq",
+    "question": "What does 'git rebase' do?",
+    "options": [
+      "Deletes a branch permanently",
+      "Reapplies a branch's commits on top of another base commit",
+      "Always creates a merge commit",
+      "Reverts the most recent commit"
+    ],
+    "answer": "Reapplies a branch's commits on top of another base commit",
+    "explanation": "Rebase rewrites commit history by replaying commits onto a new base, producing a linear history instead of a merge commit."
+  },
+  {
+    "id": "q_swe_005",
+    "role": "Software Engineer Intern",
+    "topic": "System Design",
+    "difficulty": "medium",
+    "type": "subjective",
+    "question": "What factors would you consider when deciding whether to use a SQL or NoSQL database for a new service?",
+    "options": null,
+    "answer": "Consider data structure (relational/tabular vs flexible/document), need for ACID transactions and joins, expected write/read patterns and scale, consistency requirements, and team familiarity. SQL fits well-structured relational data needing strong consistency; NoSQL fits flexible schemas, high write throughput, or horizontal scaling needs.",
+    "explanation": "Look for at least three concrete decision factors rather than a generic 'it depends' answer."
+  },
+  {
+    "id": "q_swe_006",
+    "role": "Software Engineer Intern",
+    "topic": "SQL",
+    "difficulty": "easy",
+    "type": "mcq",
+    "question": "Which SQL command removes a table entirely, including its structure?",
+    "options": [
+      "DELETE",
+      "TRUNCATE",
+      "DROP",
+      "REMOVE"
+    ],
+    "answer": "DROP",
+    "explanation": "DROP TABLE removes the table and its schema; DELETE removes rows but keeps the table, and TRUNCATE removes rows fast but also keeps the table structure."
+  },
+  {
+    "id": "q_swe_007",
+    "role": "Software Engineer Intern",
+    "topic": "DSA",
+    "difficulty": "medium",
+    "type": "coding",
+    "question": "Write a function to reverse a singly linked list in place.",
+    "options": null,
+    "answer": "def reverse_list(head):\n    prev = None\n    while head:\n        nxt = head.next\n        head.next = prev\n        prev = head\n        head = nxt\n    return prev",
+    "explanation": "Look for correct pointer manipulation (prev/current/next) and O(n) time, O(1) extra space."
+  },
+  {
+    "id": "q_swe_008",
+    "role": "Software Engineer Intern",
+    "topic": "System Design",
+    "difficulty": "hard",
+    "type": "mcq",
+    "question": "What is the main benefit of using a load balancer in a distributed system?",
+    "options": [
+      "It encrypts all traffic automatically",
+      "It distributes incoming requests across multiple servers",
+      "It replaces the need for a database",
+      "It compresses response payloads"
+    ],
+    "answer": "It distributes incoming requests across multiple servers",
+    "explanation": "A load balancer spreads traffic across multiple backend instances, improving availability and preventing any single server from being overwhelmed."
+  },
+  {
+    "id": "q_swe_009",
+    "role": "Software Engineer Intern",
+    "topic": "Concurrency",
+    "difficulty": "medium",
+    "type": "mcq",
+    "question": "What is a race condition?",
+    "options": [
+      "When a program executes faster than expected",
+      "When multiple threads access shared data and the outcome depends on timing",
+      "A type of compiler error",
+      "A network latency issue"
+    ],
+    "answer": "When multiple threads access shared data and the outcome depends on timing",
+    "explanation": "Race conditions occur when the correctness of a program depends on the relative timing of concurrent operations on shared state."
+  },
+  {
+    "id": "q_swe_010",
+    "role": "Software Engineer Intern",
+    "topic": "Debugging",
+    "difficulty": "hard",
+    "type": "subjective",
+    "question": "Describe your approach when asked to debug a production issue with no clear reproduction steps.",
+    "options": null,
+    "answer": "Start by gathering data: logs, error rates, recent deploys, and affected user segments. Form hypotheses based on what changed recently, narrow down using monitoring/tracing tools, and try to reproduce in a staging environment with similar conditions. Add logging/instrumentation if the issue can't be reproduced, then verify the fix against the original signal (e.g. error rate drop) before closing it out.",
+    "explanation": "Strong answers are systematic: gather data first, form hypotheses, narrow down, verify the fix — rather than guessing at a fix immediately."
+  }
+]

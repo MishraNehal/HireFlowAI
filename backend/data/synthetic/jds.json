@@ -1,0 +1,232 @@
+[
+  {
+    "id": "jd_python_intern",
+    "role": "Python Intern",
+    "title": "Python Developer Intern",
+    "department": "Engineering",
+    "employment_type": "internship",
+    "duration": "6 months",
+    "location": "Indore, Madhya Pradesh (Hybrid)",
+    "work_mode": "hybrid",
+    "stipend_range": "₹15,000 - ₹25,000/month",
+    "min_cgpa": 7.0,
+    "openings": 4,
+    "skills_required": [
+      "Python",
+      "Data Structures",
+      "OOP",
+      "Git",
+      "REST APIs"
+    ],
+    "skills_preferred": [
+      "FastAPI",
+      "Flask",
+      "SQL",
+      "Docker"
+    ],
+    "responsibilities": [
+      "Write clean, maintainable Python code for backend services",
+      "Build and consume REST APIs",
+      "Write unit tests and participate in code reviews",
+      "Debug and fix issues in existing modules",
+      "Collaborate with senior engineers on feature design"
+    ],
+    "qualifications": [
+      "Pursuing B.Tech/B.E. in CSE, IT, or related field",
+      "Strong fundamentals in Python and data structures",
+      "Familiarity with Git-based version control",
+      "Good problem-solving and debugging skills"
+    ],
+    "perks": [
+      "Pre-placement offer for top performers",
+      "Mentorship from senior engineers",
+      "Certificate of internship",
+      "Flexible hybrid work"
+    ],
+    "content": "Python Developer Intern role for engineering graduates pursuing B.Tech/B.E. in Computer Science or related fields. The intern will write backend code in Python, build and consume REST APIs, write unit tests, and debug issues in existing modules under the mentorship of senior engineers. Required skills include strong Python fundamentals, data structures, object-oriented programming, Git, and REST APIs. Preferred but not mandatory: FastAPI, Flask, SQL, and Docker. Minimum CGPA requirement is 7.0. The internship runs for 6 months in hybrid mode out of Indore, Madhya Pradesh, with a stipend range of ₹15,000 to ₹25,000 per month and 4 openings. Top performers may receive a pre-placement offer at the end of the internship."
+  },
+  {
+    "id": "jd_frontend_developer",
+    "role": "Frontend Developer",
+    "title": "Frontend Developer Intern",
+    "department": "Engineering",
+    "employment_type": "internship",
+    "duration": "6 months",
+    "location": "Bengaluru, Karnataka (Remote)",
+    "work_mode": "remote",
+    "stipend_range": "₹18,000 - ₹28,000/month",
+    "min_cgpa": 6.5,
+    "openings": 3,
+    "skills_required": [
+      "HTML",
+      "CSS",
+      "JavaScript",
+      "React",
+      "Responsive Design"
+    ],
+    "skills_preferred": [
+      "TypeScript",
+      "Next.js",
+      "Tailwind CSS",
+      "Redux"
+    ],
+    "responsibilities": [
+      "Build responsive, accessible UI components in React",
+      "Translate Figma designs into pixel-accurate web pages",
+      "Optimize page performance and Core Web Vitals",
+      "Integrate frontend with REST/GraphQL APIs",
+      "Write component-level tests"
+    ],
+    "qualifications": [
+      "Pursuing B.Tech/B.E./BCA in CS or related discipline",
+      "Solid understanding of HTML, CSS, and modern JavaScript (ES6+)",
+      "Hands-on experience with React through coursework or personal projects",
+      "An eye for UI detail and responsive layouts"
+    ],
+    "perks": [
+      "Fully remote internship",
+      "Letter of recommendation",
+      "Stipend + performance bonus",
+      "Access to design system and component library"
+    ],
+    "content": "Frontend Developer Intern position for students pursuing B.Tech/B.E./BCA. The role involves building responsive, accessible UI components using React, converting Figma designs into pixel-accurate web pages, integrating with REST and GraphQL APIs, and optimizing page performance and Core Web Vitals. Required skills are HTML, CSS, JavaScript, React, and responsive design. Preferred skills include TypeScript, Next.js, Tailwind CSS, and Redux. Minimum CGPA is 6.5. This is a fully remote, 6-month internship based out of Bengaluru, Karnataka, paying ₹18,000 to ₹28,000 per month, with 3 openings."
+  },
+  {
+    "id": "jd_data_analyst",
+    "role": "Data Analyst",
+    "title": "Data Analyst Intern",
+    "department": "Analytics",
+    "employment_type": "internship",
+    "duration": "4 months",
+    "location": "Pune, Maharashtra (Onsite)",
+    "work_mode": "onsite",
+    "stipend_range": "₹12,000 - ₹20,000/month",
+    "min_cgpa": 6.5,
+    "openings": 5,
+    "skills_required": [
+      "SQL",
+      "Excel",
+      "Statistics",
+      "Data Visualization",
+      "Python"
+    ],
+    "skills_preferred": [
+      "Pandas",
+      "Power BI",
+      "Tableau",
+      "A/B Testing"
+    ],
+    "responsibilities": [
+      "Write SQL queries to extract and aggregate business data",
+      "Build dashboards and reports for stakeholders",
+      "Perform exploratory data analysis on large datasets",
+      "Support A/B test design and result interpretation",
+      "Document data definitions and analysis methodology"
+    ],
+    "qualifications": [
+      "Pursuing B.Tech/B.Sc/BCA/B.Com with strong quantitative aptitude",
+      "Comfortable writing SQL joins, aggregations, and subqueries",
+      "Working knowledge of statistics (mean, variance, hypothesis testing)",
+      "Basic scripting ability in Python or R is a plus"
+    ],
+    "perks": [
+      "Hands-on exposure to production data pipelines",
+      "Certificate of completion",
+      "Possibility of extension to full-time",
+      "Daily stand-ups with the analytics team"
+    ],
+    "content": "Data Analyst Intern role focused on extracting insights from business data. Responsibilities include writing SQL queries to aggregate data, building dashboards for stakeholders, performing exploratory data analysis, supporting A/B testing, and documenting data definitions. Required skills are SQL, Excel, statistics, data visualization, and Python. Preferred skills include Pandas, Power BI, Tableau, and A/B testing experience. Minimum CGPA is 6.5. This is an onsite, 4-month internship in Pune, Maharashtra, paying ₹12,000 to ₹20,000 per month, with 5 openings."
+  },
+  {
+    "id": "jd_aiml_intern",
+    "role": "AI/ML Intern",
+    "title": "AI/ML Intern",
+    "department": "AI Research",
+    "employment_type": "internship",
+    "duration": "6 months",
+    "location": "Hyderabad, Telangana (Hybrid)",
+    "work_mode": "hybrid",
+    "stipend_range": "₹20,000 - ₹35,000/month",
+    "min_cgpa": 7.5,
+    "openings": 2,
+    "skills_required": [
+      "Python",
+      "Machine Learning",
+      "NumPy",
+      "Pandas",
+      "scikit-learn"
+    ],
+    "skills_preferred": [
+      "PyTorch",
+      "TensorFlow",
+      "NLP",
+      "LangChain"
+    ],
+    "responsibilities": [
+      "Implement and evaluate machine learning models",
+      "Preprocess and clean datasets for training",
+      "Run experiments and track results using ML tooling",
+      "Read and summarize relevant research papers",
+      "Assist in deploying models behind simple APIs"
+    ],
+    "qualifications": [
+      "Pursuing B.Tech/M.Tech in CS, AI/ML, or a related discipline",
+      "Strong grasp of linear algebra, probability, and ML fundamentals",
+      "Hands-on project experience with scikit-learn or a deep learning framework",
+      "Comfortable reading technical documentation and papers"
+    ],
+    "perks": [
+      "Co-authorship opportunity on internal research notes",
+      "GPU compute access for experiments",
+      "Mentorship from ML engineers",
+      "Pre-placement offer track for top performers"
+    ],
+    "content": "AI/ML Intern role for students with strong machine learning fundamentals. The intern will implement and evaluate ML models, preprocess datasets, run experiments, read research papers, and assist in deploying models behind simple APIs. Required skills are Python, machine learning, NumPy, Pandas, and scikit-learn. Preferred skills include PyTorch, TensorFlow, NLP, and LangChain. Minimum CGPA is 7.5, reflecting the more research-oriented nature of this role. This is a hybrid, 6-month internship in Hyderabad, Telangana, paying ₹20,000 to ₹35,000 per month, with 2 openings."
+  },
+  {
+    "id": "jd_swe_intern",
+    "role": "Software Engineer Intern",
+    "title": "Software Engineer Intern",
+    "department": "Engineering",
+    "employment_type": "internship",
+    "duration": "6 months",
+    "location": "Gurugram, Haryana (Onsite)",
+    "work_mode": "onsite",
+    "stipend_range": "₹20,000 - ₹30,000/month",
+    "min_cgpa": 7.0,
+    "openings": 6,
+    "skills_required": [
+      "Data Structures & Algorithms",
+      "OOP",
+      "Git",
+      "SQL",
+      "One programming language (Java/Python/C++)"
+    ],
+    "skills_preferred": [
+      "System Design Basics",
+      "Docker",
+      "CI/CD",
+      "Microservices"
+    ],
+    "responsibilities": [
+      "Design and implement features across the backend stack",
+      "Write efficient, well-tested code following team conventions",
+      "Participate in code reviews and sprint planning",
+      "Debug production issues with guidance from senior engineers",
+      "Contribute to technical design documents"
+    ],
+    "qualifications": [
+      "Pursuing B.Tech/B.E. in CSE, IT, or related field",
+      "Strong fundamentals in data structures, algorithms, and OOP",
+      "Proficiency in at least one of Java, Python, or C++",
+      "Comfortable with Git-based collaborative workflows"
+    ],
+    "perks": [
+      "Pre-placement offer track",
+      "Onsite mentorship and pair programming",
+      "Free meals and commute allowance",
+      "Access to internal engineering wiki and tooling"
+    ],
+    "content": "Software Engineer Intern role covering general backend feature development. Responsibilities include designing and implementing features, writing efficient and tested code, participating in code reviews and sprint planning, and contributing to technical design documents. Required skills are data structures and algorithms, object-oriented programming, Git, SQL, and proficiency in at least one of Java, Python, or C++. Preferred skills include system design basics, Docker, CI/CD, and microservices. Minimum CGPA is 7.0. This is an onsite, 6-month internship in Gurugram, Haryana, paying ₹20,000 to ₹30,000 per month, with 6 openings."
+  }
+]

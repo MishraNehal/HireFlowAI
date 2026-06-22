@@ -1,0 +1,96 @@
+[
+  {
+    "id": "policy_python_intern",
+    "role": "Python Intern",
+    "min_cgpa": 7.0,
+    "preferred_tiers": [
+      "tier1",
+      "tier2"
+    ],
+    "stipend_range": "₹15,000 - ₹25,000/month",
+    "typical_rounds": [
+      "Resume Screening",
+      "Online Assessment",
+      "Technical Interview",
+      "HR Interview"
+    ],
+    "avg_time_days": 12,
+    "content": "Hiring policy for Python Intern: minimum CGPA of 7.0, candidates preferred from tier1 and tier2 colleges, stipend range ₹15,000-₹25,000/month, typical process is Resume Screening, Online Assessment, Technical Interview, then HR Interview, with an average time-to-hire of 12 days."
+  },
+  {
+    "id": "policy_frontend_developer",
+    "role": "Frontend Developer",
+    "min_cgpa": 6.5,
+    "preferred_tiers": [
+      "tier1",
+      "tier2",
+      "tier3"
+    ],
+    "stipend_range": "₹18,000 - ₹28,000/month",
+    "typical_rounds": [
+      "Resume Screening",
+      "Portfolio Review",
+      "Technical Interview",
+      "HR Interview"
+    ],
+    "avg_time_days": 10,
+    "content": "Hiring policy for Frontend Developer: minimum CGPA of 6.5, open to all college tiers given the emphasis on portfolio quality, stipend range ₹18,000-₹28,000/month, typical process is Resume Screening, Portfolio Review, Technical Interview, then HR Interview, with an average time-to-hire of 10 days."
+  },
+  {
+    "id": "policy_data_analyst",
+    "role": "Data Analyst",
+    "min_cgpa": 6.5,
+    "preferred_tiers": [
+      "tier1",
+      "tier2",
+      "tier3"
+    ],
+    "stipend_range": "₹12,000 - ₹20,000/month",
+    "typical_rounds": [
+      "Resume Screening",
+      "Online Assessment",
+      "Case Study Interview",
+      "HR Interview"
+    ],
+    "avg_time_days": 9,
+    "content": "Hiring policy for Data Analyst: minimum CGPA of 6.5, open to all college tiers, stipend range ₹12,000-₹20,000/month, typical process is Resume Screening, Online Assessment, Case Study Interview, then HR Interview, with an average time-to-hire of 9 days."
+  },
+  {
+    "id": "policy_aiml_intern",
+    "role": "AI/ML Intern",
+    "min_cgpa": 7.5,
+    "preferred_tiers": [
+      "tier1",
+      "tier2"
+    ],
+    "stipend_range": "₹20,000 - ₹35,000/month",
+    "typical_rounds": [
+      "Resume Screening",
+      "Online Assessment",
+      "Technical Interview",
+      "Project Discussion",
+      "HR Interview"
+    ],
+    "avg_time_days": 15,
+    "content": "Hiring policy for AI/ML Intern: minimum CGPA of 7.5, candidates preferred from tier1 and tier2 colleges given the research-oriented nature of the role, stipend range ₹20,000-₹35,000/month, typical process is Resume Screening, Online Assessment, Technical Interview, Project Discussion, then HR Interview, with an average time-to-hire of 15 days, the longest of the five roles."
+  },
+  {
+    "id": "policy_swe_intern",
+    "role": "Software Engineer Intern",
+    "min_cgpa": 7.0,
+    "preferred_tiers": [
+      "tier1",
+      "tier2"
+    ],
+    "stipend_range": "₹20,000 - ₹30,000/month",
+    "typical_rounds": [
+      "Resume Screening",
+      "Online Assessment",
+      "Technical Interview Round 1",
+      "Technical Interview Round 2",
+      "HR Interview"
+    ],
+    "avg_time_days": 14,
+    "content": "Hiring policy for Software Engineer Intern: minimum CGPA of 7.0, candidates preferred from tier1 and tier2 colleges, stipend range ₹20,000-₹30,000/month, typical process is Resume Screening, Online Assessment, two Technical Interview rounds, then HR Interview, with an average time-to-hire of 14 days."
+  }
+]

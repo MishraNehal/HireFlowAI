@@ -1,0 +1,122 @@
+[
+  {
+    "id": "ma_q_python_005",
+    "question_id": "q_python_005",
+    "role": "Python Intern",
+    "model_answer": "A shallow copy creates a new outer object but keeps references to the same nested objects, so changes to nested mutable objects affect both copies. A deep copy recursively copies every nested object, so the two copies are fully independent.",
+    "key_points": [
+      "Shallow copy shares nested references",
+      "Deep copy is fully independent",
+      "copy.copy() vs copy.deepcopy()"
+    ],
+    "scoring_notes": "Candidates should mention copy.copy() vs copy.deepcopy() and give a concrete example with a list of lists."
+  },
+  {
+    "id": "ma_q_python_007",
+    "question_id": "q_python_007",
+    "role": "Python Intern",
+    "model_answer": "def is_palindrome(s):\n    s = s.lower()\n    return s == s[::-1]",
+    "key_points": [
+      "Lowercase normalization",
+      "Compare string to its reverse",
+      "O(n) time complexity"
+    ],
+    "scoring_notes": "Look for correct case handling and use of slicing or two-pointer comparison; O(n) time is expected."
+  },
+  {
+    "id": "ma_q_frontend_005",
+    "question_id": "q_frontend_005",
+    "role": "Frontend Developer",
+    "model_answer": "Flexbox is one-dimensional and best for laying out items in a row or column (e.g. navbars, button groups). CSS Grid is two-dimensional and best for full page layouts where you need to control both rows and columns simultaneously.",
+    "key_points": [
+      "Flexbox = 1D layout",
+      "Grid = 2D layout",
+      "Concrete use case for each"
+    ],
+    "scoring_notes": "Look for the one-dimensional vs two-dimensional distinction and a concrete use case for each."
+  },
+  {
+    "id": "ma_q_frontend_010",
+    "question_id": "q_frontend_010",
+    "role": "Frontend Developer",
+    "model_answer": "Core Web Vitals are Google's metrics for user experience: LCP (loading), CLS (visual stability), and INP/FID (interactivity). To improve LCP you can optimize and lazy-load images, use a CDN, reduce render-blocking CSS/JS, and preload critical resources.",
+    "key_points": [
+      "Names LCP, CLS, INP/FID",
+      "Image optimization/lazy loading",
+      "Reduce render-blocking resources"
+    ],
+    "scoring_notes": "Strong answers name all three Core Web Vitals and give at least two concrete LCP optimizations."
+  },
+  {
+    "id": "ma_q_data_005",
+    "question_id": "q_data_005",
+    "role": "Data Analyst",
+    "model_answer": "An INNER JOIN returns only rows with matching keys in both tables. A LEFT JOIN returns all rows from the left table, with NULLs filled in for non-matching rows from the right table. Example: joining candidates to scores — a LEFT JOIN would show candidates with no score yet as NULL, while an INNER JOIN would exclude them entirely.",
+    "key_points": [
+      "INNER JOIN drops unmatched rows",
+      "LEFT JOIN keeps all left rows with NULLs",
+      "Concrete example given"
+    ],
+    "scoring_notes": "Look for a concrete example showing what happens to unmatched rows in each join type."
+  },
+  {
+    "id": "ma_q_data_010",
+    "question_id": "q_data_010",
+    "role": "Data Analyst",
+    "model_answer": "First identify the extent and pattern of missingness (random vs systematic). Then choose an approach depending on context: drop rows/columns if missingness is small and random, impute using mean/median/mode or a model-based method for numeric data, or treat 'missing' as its own category for categorical data. Document whatever decision is made since it affects downstream conclusions.",
+    "key_points": [
+      "Diagnose missingness pattern first",
+      "Choice of drop vs impute justified by context",
+      "Documents the decision made"
+    ],
+    "scoring_notes": "Strong answers mention diagnosing the missingness pattern before picking a fix, not jumping straight to mean imputation."
+  },
+  {
+    "id": "ma_q_aiml_005",
+    "question_id": "q_aiml_005",
+    "role": "AI/ML Intern",
+    "model_answer": "Bias is error from overly simplistic assumptions (underfitting); variance is error from being too sensitive to training data fluctuations (overfitting). Reducing bias often increases variance and vice versa, so the goal is to find a model complexity that minimizes total error on unseen data.",
+    "key_points": [
+      "Bias = underfitting from oversimplification",
+      "Variance = overfitting from sensitivity to training data",
+      "Explains the tradeoff between the two"
+    ],
+    "scoring_notes": "Look for clear definitions of both terms and an explanation of why they trade off against each other."
+  },
+  {
+    "id": "ma_q_aiml_010",
+    "question_id": "q_aiml_010",
+    "role": "AI/ML Intern",
+    "model_answer": "Consider dataset size (deep nets need more data), interpretability requirements, latency/deployment constraints, and whether the relationship is likely linear or highly non-linear. Start simple, establish a baseline, and only add complexity if it meaningfully improves validation performance.",
+    "key_points": [
+      "Considers dataset size",
+      "Considers interpretability/latency constraints",
+      "Recommends starting from a simple baseline"
+    ],
+    "scoring_notes": "Strong answers mention starting with a simple baseline before reaching for a more complex model, not complexity for its own sake."
+  },
+  {
+    "id": "ma_q_swe_005",
+    "question_id": "q_swe_005",
+    "role": "Software Engineer Intern",
+    "model_answer": "Consider data structure (relational/tabular vs flexible/document), need for ACID transactions and joins, expected write/read patterns and scale, consistency requirements, and team familiarity. SQL fits well-structured relational data needing strong consistency; NoSQL fits flexible schemas, high write throughput, or horizontal scaling needs.",
+    "key_points": [
+      "Data structure shape (relational vs flexible)",
+      "Consistency/ACID needs",
+      "Scale and team familiarity"
+    ],
+    "scoring_notes": "Look for at least three concrete decision factors rather than a generic 'it depends' answer."
+  },
+  {
+    "id": "ma_q_swe_010",
+    "question_id": "q_swe_010",
+    "role": "Software Engineer Intern",
+    "model_answer": "Start by gathering data: logs, error rates, recent deploys, and affected user segments. Form hypotheses based on what changed recently, narrow down using monitoring/tracing tools, and try to reproduce in a staging environment with similar conditions. Add logging/instrumentation if the issue can't be reproduced, then verify the fix against the original signal (e.g. error rate drop) before closing it out.",
+    "key_points": [
+      "Gathers data/logs before guessing",
+      "Forms and tests hypotheses",
+      "Verifies fix against original signal"
+    ],
+    "scoring_notes": "Strong answers are systematic: gather data first, form hypotheses, narrow down, verify the fix — rather than guessing at a fix immediately."
+  }
+]

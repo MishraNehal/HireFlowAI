@@ -1,0 +1,421 @@
+[
+  {
+    "id": "cand_001",
+    "name": "Aarav Sharma",
+    "email": "aarav.sharma2026@gmail.com",
+    "phone": "+91-9876543210",
+    "college": "MANIT Bhopal",
+    "branch": "Computer Science Engineering",
+    "batch_year": 2026,
+    "cgpa": 8.4,
+    "target_role": "Software Engineer Intern",
+    "skills": [
+      "Java",
+      "Data Structures & Algorithms",
+      "SQL",
+      "Git",
+      "Spring Boot"
+    ],
+    "projects": [
+      {
+        "title": "Hostel Management System",
+        "description": "A web app to manage hostel room allocation and complaints for 1200+ students.",
+        "tech_stack": [
+          "Java",
+          "Spring Boot",
+          "MySQL"
+        ]
+      },
+      {
+        "title": "Competitive Programming Tracker",
+        "description": "Chrome extension that aggregates Codeforces/LeetCode stats into one dashboard.",
+        "tech_stack": [
+          "JavaScript",
+          "Chrome Extension API"
+        ]
+      }
+    ],
+    "certifications": [
+      "NPTEL: Data Structures and Algorithms",
+      "Oracle Java SE 11 Certified Associate"
+    ],
+    "resume_summary": "Final-year CSE student at MANIT Bhopal with strong DSA fundamentals and hands-on backend project experience using Java and Spring Boot."
+  },
+  {
+    "id": "cand_002",
+    "name": "Priya Patel",
+    "email": "priya.patel.vit@gmail.com",
+    "phone": "+91-9123456780",
+    "college": "VIT Vellore",
+    "branch": "Information Technology",
+    "batch_year": 2026,
+    "cgpa": 8.9,
+    "target_role": "AI/ML Intern",
+    "skills": [
+      "Python",
+      "scikit-learn",
+      "NumPy",
+      "Pandas",
+      "Matplotlib"
+    ],
+    "projects": [
+      {
+        "title": "Crop Yield Prediction",
+        "description": "Regression model predicting crop yield from weather and soil data for a state agriculture dataset.",
+        "tech_stack": [
+          "Python",
+          "scikit-learn",
+          "Pandas"
+        ]
+      },
+      {
+        "title": "Spam Email Classifier",
+        "description": "Naive Bayes and SVM classifiers compared on a public spam dataset, reaching 97% accuracy.",
+        "tech_stack": [
+          "Python",
+          "scikit-learn",
+          "NLTK"
+        ]
+      }
+    ],
+    "certifications": [
+      "Coursera: Machine Learning by Andrew Ng",
+      "Kaggle: Intro to Machine Learning"
+    ],
+    "resume_summary": "IT undergraduate at VIT Vellore with two applied ML projects and a Kaggle competition entry; comfortable with the full scikit-learn workflow."
+  },
+  {
+    "id": "cand_003",
+    "name": "Rohan Mehta",
+    "email": "rohan.mehta99@gmail.com",
+    "phone": "+91-9988776655",
+    "college": "SGSITS Indore",
+    "branch": "Computer Science Engineering",
+    "batch_year": 2027,
+    "cgpa": 7.6,
+    "target_role": "Python Intern",
+    "skills": [
+      "Python",
+      "Flask",
+      "REST APIs",
+      "MySQL",
+      "Git"
+    ],
+    "projects": [
+      {
+        "title": "Personal Finance Tracker API",
+        "description": "Flask + MySQL backend exposing REST endpoints for tracking expenses across categories.",
+        "tech_stack": [
+          "Python",
+          "Flask",
+          "MySQL"
+        ]
+      },
+      {
+        "title": "College Event Portal",
+        "description": "Built the backend for a college-wide event registration portal used by 500+ students.",
+        "tech_stack": [
+          "Python",
+          "Flask",
+          "SQLite"
+        ]
+      }
+    ],
+    "certifications": [
+      "HackerRank: Python (Intermediate)"
+    ],
+    "resume_summary": "Third-year CSE student at SGSITS Indore who has shipped two Flask-based backend projects used by real student groups on campus."
+  },
+  {
+    "id": "cand_004",
+    "name": "Sneha Iyer",
+    "email": "sneha.iyer.iiti@gmail.com",
+    "phone": "+91-9090909090",
+    "college": "IIT Indore",
+    "branch": "Computer Science Engineering",
+    "batch_year": 2026,
+    "cgpa": 9.1,
+    "target_role": "AI/ML Intern",
+    "skills": [
+      "Python",
+      "PyTorch",
+      "NLP",
+      "LangChain",
+      "Transformers"
+    ],
+    "projects": [
+      {
+        "title": "Lecture Notes Summarizer",
+        "description": "Fine-tuned a transformer model to summarize long lecture transcripts into bullet-point notes.",
+        "tech_stack": [
+          "Python",
+          "PyTorch",
+          "HuggingFace Transformers"
+        ]
+      },
+      {
+        "title": "RAG-based Course Q&A Bot",
+        "description": "Built a LangChain-based RAG pipeline over course PDFs to answer student queries with citations.",
+        "tech_stack": [
+          "Python",
+          "LangChain",
+          "FAISS"
+        ]
+      }
+    ],
+    "certifications": [
+      "DeepLearning.AI: NLP Specialization (in progress)"
+    ],
+    "resume_summary": "CSE undergraduate at IIT Indore focused on applied NLP, with two end-to-end projects involving transformer fine-tuning and RAG pipelines."
+  },
+  {
+    "id": "cand_005",
+    "name": "Karan Singh",
+    "email": "karan.singh.dtu@gmail.com",
+    "phone": "+91-9871234560",
+    "college": "Delhi Technological University",
+    "branch": "Information Technology",
+    "batch_year": 2026,
+    "cgpa": 8.0,
+    "target_role": "Frontend Developer",
+    "skills": [
+      "React",
+      "JavaScript",
+      "CSS",
+      "Tailwind CSS",
+      "TypeScript"
+    ],
+    "projects": [
+      {
+        "title": "Campus Marketplace UI",
+        "description": "React + Tailwind frontend for a buy/sell marketplace for college students, with dark mode and responsive layouts.",
+        "tech_stack": [
+          "React",
+          "Tailwind CSS",
+          "TypeScript"
+        ]
+      },
+      {
+        "title": "Portfolio Component Library",
+        "description": "Published a small reusable React component library (buttons, modals, cards) on npm.",
+        "tech_stack": [
+          "React",
+          "TypeScript",
+          "Storybook"
+        ]
+      }
+    ],
+    "certifications": [
+      "Meta Front-End Developer (Coursera)"
+    ],
+    "resume_summary": "IT student at DTU with a strong eye for UI detail; has published a small open-source component library and built two responsive React applications."
+  },
+  {
+    "id": "cand_006",
+    "name": "Ananya Reddy",
+    "email": "ananya.reddy.iiith@gmail.com",
+    "phone": "+91-9876123450",
+    "college": "IIIT Hyderabad",
+    "branch": "Computer Science Engineering",
+    "batch_year": 2027,
+    "cgpa": 8.7,
+    "target_role": "Software Engineer Intern",
+    "skills": [
+      "C++",
+      "Data Structures & Algorithms",
+      "System Design Basics",
+      "Git",
+      "Linux"
+    ],
+    "projects": [
+      {
+        "title": "In-memory Key-Value Store",
+        "description": "Built a Redis-like in-memory KV store in C++ supporting TTL expiry and basic persistence.",
+        "tech_stack": [
+          "C++",
+          "Multithreading"
+        ]
+      },
+      {
+        "title": "Distributed URL Shortener",
+        "description": "URL shortener with a sharded backend and rate limiting, deployed across two nodes for a course project.",
+        "tech_stack": [
+          "C++",
+          "Docker",
+          "Redis"
+        ]
+      }
+    ],
+    "certifications": [
+      "NPTEL: Design and Analysis of Algorithms"
+    ],
+    "resume_summary": "CSE student at IIIT Hyderabad with strong systems-level project experience, including building an in-memory KV store from scratch in C++."
+  },
+  {
+    "id": "cand_007",
+    "name": "Vikram Joshi",
+    "email": "vikram.joshi.vit@gmail.com",
+    "phone": "+91-9012345678",
+    "college": "VIT Bhopal",
+    "branch": "Computer Science Engineering",
+    "batch_year": 2026,
+    "cgpa": 7.2,
+    "target_role": "Data Analyst",
+    "skills": [
+      "SQL",
+      "Excel",
+      "Power BI",
+      "Python",
+      "Statistics"
+    ],
+    "projects": [
+      {
+        "title": "Placement Trends Dashboard",
+        "description": "Power BI dashboard analyzing 5 years of campus placement data to highlight trends by branch and CGPA band.",
+        "tech_stack": [
+          "Power BI",
+          "SQL",
+          "Excel"
+        ]
+      },
+      {
+        "title": "Retail Sales EDA",
+        "description": "Exploratory analysis of a public retail dataset to identify seasonal sales patterns and top-performing categories.",
+        "tech_stack": [
+          "Python",
+          "Pandas",
+          "Matplotlib"
+        ]
+      }
+    ],
+    "certifications": [
+      "Microsoft: Power BI Data Analyst Associate"
+    ],
+    "resume_summary": "CSE student at VIT Bhopal with a strong interest in data analytics, having built a placement trends dashboard adopted informally by the college TPO cell."
+  },
+  {
+    "id": "cand_008",
+    "name": "Divya Nair",
+    "email": "divya.nair.manipal@gmail.com",
+    "phone": "+91-9345678901",
+    "college": "Manipal Institute of Technology",
+    "branch": "Information Technology",
+    "batch_year": 2026,
+    "cgpa": 8.3,
+    "target_role": "Frontend Developer",
+    "skills": [
+      "HTML",
+      "CSS",
+      "JavaScript",
+      "Next.js",
+      "Figma"
+    ],
+    "projects": [
+      {
+        "title": "NGO Donation Platform",
+        "description": "Built a Next.js donation platform for a local NGO with a Figma-designed UI and Razorpay test integration.",
+        "tech_stack": [
+          "Next.js",
+          "Tailwind CSS",
+          "Figma"
+        ]
+      },
+      {
+        "title": "Recipe Finder App",
+        "description": "A responsive recipe search app consuming a public food API, with saved-favorites stored in local state.",
+        "tech_stack": [
+          "JavaScript",
+          "CSS",
+          "REST API"
+        ]
+      }
+    ],
+    "certifications": [
+      "freeCodeCamp: Responsive Web Design"
+    ],
+    "resume_summary": "IT student at Manipal with hands-on experience translating Figma designs into production-ready Next.js applications for a real NGO client."
+  },
+  {
+    "id": "cand_009",
+    "name": "Aditya Kumar",
+    "email": "aditya.kumar.nitw@gmail.com",
+    "phone": "+91-9456789012",
+    "college": "NIT Warangal",
+    "branch": "Computer Science Engineering",
+    "batch_year": 2026,
+    "cgpa": 8.6,
+    "target_role": "Data Analyst",
+    "skills": [
+      "SQL",
+      "Pandas",
+      "Tableau",
+      "Statistics",
+      "Python"
+    ],
+    "projects": [
+      {
+        "title": "Student Attrition Analysis",
+        "description": "Built a Tableau dashboard and statistical analysis identifying factors correlated with student dropout in a public education dataset.",
+        "tech_stack": [
+          "Tableau",
+          "Python",
+          "Pandas"
+        ]
+      },
+      {
+        "title": "E-commerce A/B Test Simulation",
+        "description": "Simulated an A/B test on checkout flow changes and computed statistical significance using Python.",
+        "tech_stack": [
+          "Python",
+          "SciPy",
+          "Pandas"
+        ]
+      }
+    ],
+    "certifications": [
+      "Google Data Analytics Professional Certificate"
+    ],
+    "resume_summary": "CSE student at NIT Warangal with solid statistics fundamentals and two analytics projects spanning dashboarding and experiment design."
+  },
+  {
+    "id": "cand_010",
+    "name": "Ishita Gupta",
+    "email": "ishita.gupta.bits@gmail.com",
+    "phone": "+91-9567890123",
+    "college": "BITS Pilani",
+    "branch": "Computer Science Engineering",
+    "batch_year": 2027,
+    "cgpa": 9.0,
+    "target_role": "Software Engineer Intern",
+    "skills": [
+      "Python",
+      "Java",
+      "Data Structures & Algorithms",
+      "Docker",
+      "Git"
+    ],
+    "projects": [
+      {
+        "title": "Microservice Order System",
+        "description": "Built a small order-processing system split into 3 Dockerized microservices communicating over REST, for a Practice School project.",
+        "tech_stack": [
+          "Java",
+          "Spring Boot",
+          "Docker"
+        ]
+      },
+      {
+        "title": "LeetCode Pattern Notes",
+        "description": "Maintains a popular public GitHub repo of categorized DSA patterns with 600+ stars, used by juniors on campus.",
+        "tech_stack": [
+          "Python",
+          "Markdown"
+        ]
+      }
+    ],
+    "certifications": [
+      "NPTEL: Database Management Systems"
+    ],
+    "resume_summary": "CSE student at BITS Pilani with strong DSA fundamentals and practical microservices project experience from a Practice School assignment."
+  }
+]

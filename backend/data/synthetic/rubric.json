@@ -1,0 +1,48 @@
+{
+  "id": "rubric_default_technical",
+  "name": "Standard Technical Interview Evaluation Rubric",
+  "scale": "1-5 (1 = Poor, 3 = Meets Expectations, 5 = Outstanding)",
+  "criteria": [
+    {
+      "name": "Technical Skills",
+      "weight": 0.4,
+      "description": "Depth of role-relevant technical knowledge and correctness of solutions to coding/technical questions.",
+      "score_guide": {
+        "1-2": "Cannot solve basic problems for the role; major gaps in fundamentals.",
+        "3": "Solves expected problems with some guidance; solid grasp of fundamentals.",
+        "4-5": "Solves problems independently and efficiently; demonstrates deeper understanding beyond the question asked."
+      }
+    },
+    {
+      "name": "Problem Solving",
+      "weight": 0.3,
+      "description": "Approach to breaking down unfamiliar problems, debugging, and reasoning under ambiguity.",
+      "score_guide": {
+        "1-2": "Gets stuck and cannot make progress without heavy hints.",
+        "3": "Reaches a working approach with some prompting; reasonable debugging instincts.",
+        "4-5": "Structures the problem clearly, considers edge cases and tradeoffs unprompted."
+      }
+    },
+    {
+      "name": "Communication",
+      "weight": 0.2,
+      "description": "Clarity of explanation, ability to articulate reasoning, and responsiveness to questions/feedback.",
+      "score_guide": {
+        "1-2": "Difficult to follow; cannot explain own reasoning.",
+        "3": "Explains reasoning clearly when asked; communicates adequately.",
+        "4-5": "Proactively explains tradeoffs and reasoning; communicates concisely and precisely."
+      }
+    },
+    {
+      "name": "Cultural Fit",
+      "weight": 0.1,
+      "description": "Alignment with collaborative work style, coachability, and enthusiasm for the role.",
+      "score_guide": {
+        "1-2": "Dismissive of feedback or shows little engagement with the role.",
+        "3": "Receptive to feedback; reasonable engagement and motivation.",
+        "4-5": "Highly coachable, curious, and clearly motivated by the specific role/company."
+      }
+    }
+  ],
+  "content": "Standard technical interview evaluation rubric with four weighted criteria: Technical Skills (40%) assessing depth of role-relevant knowledge and correctness of solutions, Problem Solving (30%) assessing approach to unfamiliar problems and debugging under ambiguity, Communication (20%) assessing clarity of explanation and responsiveness, and Cultural Fit (10%) assessing collaborative style and coachability. Each criterion is scored on a 1-5 scale where 1 is poor, 3 meets expectations, and 5 is outstanding. The final weighted score is computed as (technical*0.40 + problem_solving*0.30 + communication*0.20 + cultural_fit*0.10)."
+}
