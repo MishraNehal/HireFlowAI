@@ -67,6 +67,7 @@ from app.api.onboarding import router as onboarding_router
 from app.api.dashboard import router as dashboard_router
 from app.api.rag import router as rag_router
 from app.api.websocket import router as websocket_router
+from app.services.websocket import ws_manager
 
 app.include_router(auth_router)
 app.include_router(companies_router)
@@ -110,6 +111,8 @@ def health():
                 "groq": "configured" if settings.GROQ_API_KEY else "not_configured",
                 "sendgrid": "configured" if settings.SENDGRID_API_KEY else "not_configured",
                 "clerk": "configured" if settings.CLERK_SECRET_KEY else "not_configured",
+                "storage": "configured" if settings.SUPABASE_URL else "not_configured",
+                "websocket_connections": ws_manager.total_connections,
             },
         },
         "meta": {"timestamp": datetime.now(timezone.utc).isoformat(), "version": "3.0.0"},

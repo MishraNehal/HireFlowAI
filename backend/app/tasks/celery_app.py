@@ -1,10 +1,15 @@
 from celery import Celery
 from app.config import settings
 
+# Upstash Redis (rediss://) requires ssl_cert_reqs parameter
+redis_url = settings.REDIS_URL
+if redis_url.startswith("rediss://") and "ssl_cert_reqs" not in redis_url:
+    redis_url = redis_url + ("&" if "?" in redis_url else "?") + "ssl_cert_reqs=CERT_NONE"
+
 celery_app = Celery(
     "hireflow",
-    broker=settings.REDIS_URL,
-    backend=settings.REDIS_URL,
+    broker=redis_url,
+    backend=redis_url,
     include=[
         "app.tasks.pipeline_tasks",
         "app.tasks.email_tasks",
@@ -23,4 +28,6 @@ celery_app.conf.update(
     task_max_retries=3,
     task_default_retry_delay=30,
     broker_connection_retry_on_startup=True,
+    broker_use_ssl={"ssl_cert_reqs": "CERT_NONE"},
+    redis_backend_use_ssl={"ssl_cert_reqs": "CERT_NONE"},
 )

@@ -66,7 +66,10 @@ def get_current_user(
 
     claims = verify_clerk_token(credentials.credentials)
     clerk_user_id = claims.get("sub")
-    clerk_org_id = claims.get("org_id")
+
+    # Clerk JWT v2 format nests org info under "o": {"id": "org_xxx", ...}
+    # Clerk JWT v1 format has it directly as "org_id": "org_xxx"
+    clerk_org_id = claims.get("org_id") or (claims.get("o") or {}).get("id")
 
     company = db.query(Company).filter(Company.clerk_org_id == clerk_org_id).first()
     if not company:

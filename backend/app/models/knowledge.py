@@ -48,7 +48,7 @@ class ApprovalRecord(Base):
     __tablename__ = "approval_records"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    checkpoint_id = Column(UUID(as_uuid=True), ForeignKey("checkpoints.id"), nullable=False, index=True)
+    checkpoint_id = Column(UUID(as_uuid=True), ForeignKey("pipeline_checkpoints.id"), nullable=False, index=True)
     campaign_id = Column(UUID(as_uuid=True), ForeignKey("campaigns.id"), nullable=False, index=True)
     company_id = Column(UUID(as_uuid=True), ForeignKey("companies.id"), nullable=False, index=True)
     stage = Column(String(100), nullable=False)

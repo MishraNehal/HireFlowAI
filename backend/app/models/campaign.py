@@ -94,7 +94,7 @@ class Campaign(Base):
 
 
 class CampaignWorkflowConfig(Base):
-    __tablename__ = "campaign_workflow_configs"
+    __tablename__ = "campaign_workflow_config"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     campaign_id = Column(UUID(as_uuid=True), ForeignKey("campaigns.id"), nullable=False, unique=True, index=True)
@@ -122,7 +122,7 @@ class CampaignRound(Base):
 
 
 class Checkpoint(Base):
-    __tablename__ = "checkpoints"
+    __tablename__ = "pipeline_checkpoints"
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     campaign_id = Column(UUID(as_uuid=True), ForeignKey("campaigns.id"), nullable=False, index=True)

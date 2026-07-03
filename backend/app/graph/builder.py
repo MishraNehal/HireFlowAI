@@ -25,11 +25,12 @@ Checkpoint interrupts: all 8 checkpoint nodes pause for HR approval.
 
 import logging
 from typing import Any
+from functools import lru_cache
 
 from langgraph.graph import StateGraph, END
-from langgraph.checkpoint.memory import MemorySaver
 
 from app.agents.state import HireFlowState
+from app.config import settings
 
 logger = logging.getLogger(__name__)
 
@@ -66,14 +67,20 @@ def _get_node_registry() -> dict[str, Any]:
         _node.__name__ = name
         return _node
 
-    # Try to import real agents; fall back to placeholder if not built yet
+    # Try to import real agents; fall back to placeholder if not built yet.
+    # Uses WARNING (not DEBUG) so import failures are NEVER silently hidden —
+    # a silently-swallowed ImportError here means an agent silently no-ops,
+    # which is exactly the kind of bug that's invisible until production.
     def _try_import(module_path: str, func_name: str, node_name: str):
         try:
             import importlib
             mod = importlib.import_module(module_path)
             return getattr(mod, func_name)
-        except (ImportError, AttributeError):
-            logger.debug(f"[graph] Agent '{node_name}' not found — using placeholder")
+        except (ImportError, AttributeError) as e:
+            logger.warning(
+                f"[graph] Agent '{node_name}' could not be imported from "
+                f"{module_path}.{func_name} — using placeholder. Reason: {e}"
+            )
             return _placeholder(node_name)
 
     _NODE_REGISTRY = {
@@ -154,11 +161,20 @@ def _get_node_registry() -> dict[str, Any]:
 def _make_checkpoint_node(stage_name: str):
     """
     Returns a node function for a checkpoint stage.
-    The actual pause logic (NodeInterrupt) is in checkpoint_manager.reach_checkpoint().
-    The graph builder wires the interrupt; this node just updates current_stage.
+
+    IMPORTANT: This node only updates current_stage. It must NEVER overwrite
+    checkpoint_status, because by the time this node actually executes, one
+    of two things is true:
+      1. We're about to pause (interrupt_before fires BEFORE this runs) — in
+         which case checkpoint_status doesn't matter yet.
+      2. We've been resumed after HR's decision was injected via
+         graph.update_state() — in which case checkpoint_status holds the
+         HR decision ("approved"/"rejected"/"revision_requested") and the
+         downstream _orchestrator_router depends on reading that exact value.
+         Overwriting it back to "pending" here breaks routing entirely.
     """
     def _checkpoint_node(state: HireFlowState) -> HireFlowState:
-        return {**state, "current_stage": stage_name, "checkpoint_status": "pending"}
+        return {**state, "current_stage": stage_name}
     _checkpoint_node.__name__ = stage_name
     return _checkpoint_node
 
@@ -216,6 +232,42 @@ def _orchestrator_router(state: HireFlowState) -> str:
 # ─────────────────────────────────────────────────────────────────────────────
 # Public API
 # ─────────────────────────────────────────────────────────────────────────────
+
+_checkpointer_cm = None
+_checkpointer_instance = None
+
+
+def _get_checkpointer():
+    """
+    Returns a persistent PostgreSQL checkpointer (Supabase) so that
+    LangGraph thread state survives across Celery worker restarts.
+
+    Critical: MemorySaver loses all state when the Celery worker process
+    restarts (or a new task picks up an existing thread_id in a fresh
+    worker), which silently resets the pipeline back to entry point.
+    PostgresSaver persists thread state in the database itself.
+
+    The connection + table setup is done once per process (cached).
+    """
+    global _checkpointer_cm, _checkpointer_instance
+    if _checkpointer_instance is not None:
+        return _checkpointer_instance
+
+    from langgraph.checkpoint.postgres import PostgresSaver
+
+    # psycopg2-style DATABASE_URL needs psycopg (v3) driver prefix removed —
+    # PostgresSaver uses psycopg3 connection strings (postgresql://...)
+    conn_string = settings.DATABASE_URL
+    if conn_string.startswith("postgresql+psycopg2://"):
+        conn_string = conn_string.replace("postgresql+psycopg2://", "postgresql://", 1)
+
+    _checkpointer_cm = PostgresSaver.from_conn_string(conn_string)
+    _checkpointer_instance = _checkpointer_cm.__enter__()
+    _checkpointer_instance.setup()  # idempotent — creates LangGraph's own checkpoint tables if missing
+
+    logger.info("[graph] PostgreSQL checkpointer initialised — thread state will persist across restarts")
+    return _checkpointer_instance
+
 
 def build_graph(workflow_config: dict | None = None) -> Any:
     """
@@ -331,7 +383,7 @@ def build_graph(workflow_config: dict | None = None) -> Any:
     graph.add_edge("error_handler", END)
 
     # ── Compile with interrupt_before all checkpoint nodes ────────────────────
-    checkpointer = MemorySaver()
+    checkpointer = _get_checkpointer()
     compiled = graph.compile(
         checkpointer=checkpointer,
         interrupt_before=list(CHECKPOINT_NODES),

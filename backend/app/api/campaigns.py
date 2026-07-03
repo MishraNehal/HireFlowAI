@@ -1,6 +1,5 @@
 """
-Campaigns API — Full CRUD + lifecycle management.
-Milestone 1: Core campaign operations backed by real DB.
+Campaigns API — Full CRUD + lifecycle management + pipeline integration.
 """
 from datetime import datetime, timezone
 from typing import Optional, List
@@ -13,7 +12,10 @@ from sqlalchemy.orm import Session
 from app.database import get_db
 from app.middleware import get_current_user, get_current_company
 from app.models.company import CompanyUser, Company
-from app.models.campaign import Campaign, CampaignStatus, WorkMode, CampaignWorkflowConfig
+from app.models.campaign import (
+    Campaign, CampaignStatus, WorkMode, CampaignWorkflowConfig, Checkpoint
+)
+from app.graph.builder import get_graph_preview
 
 router = APIRouter(prefix="/api/v1/campaigns", tags=["campaigns"])
 
@@ -28,8 +30,8 @@ def _envelope(success: bool, message: str, data=None, error: str = None):
     }
 
 
-def _campaign_to_dict(c: Campaign) -> dict:
-    return {
+def _campaign_to_dict(c: Campaign, include_checkpoints: bool = False, db: Session = None) -> dict:
+    data = {
         "id": str(c.id),
         "title": c.title,
         "role": c.role,
@@ -44,6 +46,42 @@ def _campaign_to_dict(c: Campaign) -> dict:
         "created_at": c.created_at.isoformat() if c.created_at else None,
         "company_id": str(c.company_id),
     }
+
+    # Include workflow config if exists
+    if c.workflow_config:
+        data["workflow_config"] = {
+            "rounds_selected": c.workflow_config.rounds_selected,
+            "approval_gates": c.workflow_config.approval_gates,
+        }
+
+    # Include checkpoints and pipeline stats if requested
+    if include_checkpoints and db:
+        checkpoints = (
+            db.query(Checkpoint)
+            .filter(Checkpoint.campaign_id == c.id)
+            .order_by(Checkpoint.stage_order.asc())
+            .all()
+        )
+        data["checkpoints"] = [
+            {
+                "id": str(cp.id),
+                "stage_name": cp.stage_name,
+                "stage_order": cp.stage_order,
+                "status": cp.status.value,
+                "hr_notes": cp.hr_notes,
+                "decided_at": cp.decided_at.isoformat() if cp.decided_at else None,
+                "created_at": cp.created_at.isoformat() if cp.created_at else None,
+            }
+            for cp in checkpoints
+        ]
+        data["pipeline_stats"] = {
+            "total_checkpoints": len(checkpoints),
+            "approved": sum(1 for cp in checkpoints if cp.status.value == "approved"),
+            "pending": sum(1 for cp in checkpoints if cp.status.value == "pending"),
+            "rejected": sum(1 for cp in checkpoints if cp.status.value == "rejected"),
+        }
+
+    return data
 
 
 # ── Schemas ───────────────────────────────────────────────────────────────────
@@ -112,7 +150,12 @@ def create_campaign(
     company: Company = Depends(get_current_company),
     db: Session = Depends(get_db),
 ):
-    """Create a new campaign in DRAFT status."""
+    """
+    Create a new campaign and immediately launch the AI pipeline.
+
+    Returns campaign_id instantly — pipeline runs async via Celery.
+    WebSocket events will stream pipeline progress to the HR dashboard.
+    """
     campaign = Campaign(
         company_id=company.id,
         created_by=current_user.id,
@@ -130,7 +173,22 @@ def create_campaign(
     db.add(campaign)
     db.commit()
     db.refresh(campaign)
-    return _envelope(True, "Campaign created", _campaign_to_dict(campaign))
+
+    # Queue Celery pipeline task — returns immediately, pipeline runs in background
+    from app.tasks.pipeline_tasks import run_pipeline
+    run_pipeline.delay(
+        campaign_id=str(campaign.id),
+        company_id=str(company.id),
+    )
+
+    campaign.status = CampaignStatus.active
+    db.commit()
+
+    return _envelope(True, "Campaign created — AI pipeline started", {
+        **_campaign_to_dict(campaign),
+        "pipeline_status": "started",
+        "message": "Connect to WebSocket ws://{host}/ws/{company_id}/{campaign_id} for real-time updates",
+    })
 
 
 @router.get("/{campaign_id}")
@@ -139,21 +197,15 @@ def get_campaign(
     company: Company = Depends(get_current_company),
     db: Session = Depends(get_db),
 ):
-    """Get a single campaign by ID."""
+    """Get full campaign detail with current stage, checkpoints, and pipeline stats."""
     c = db.query(Campaign).filter(
         Campaign.id == campaign_id,
         Campaign.company_id == company.id,
     ).first()
     if not c:
         raise HTTPException(status_code=404, detail="Campaign not found")
-    data = _campaign_to_dict(c)
-    # Include workflow config if exists
-    if c.workflow_config:
-        data["workflow_config"] = {
-            "rounds_selected": c.workflow_config.rounds_selected,
-            "approval_gates": c.workflow_config.approval_gates,
-        }
-    return _envelope(True, "OK", data)
+
+    return _envelope(True, "OK", _campaign_to_dict(c, include_checkpoints=True, db=db))
 
 
 @router.patch("/{campaign_id}")
@@ -194,7 +246,7 @@ def delete_campaign(
     if not c:
         raise HTTPException(status_code=404, detail="Campaign not found")
     if c.status != CampaignStatus.draft:
-        raise HTTPException(status_code=400, detail="Only DRAFT campaigns can be deleted. Cancel it first.")
+        raise HTTPException(status_code=400, detail="Only DRAFT campaigns can be deleted.")
     db.delete(c)
     db.commit()
     return _envelope(True, "Campaign deleted")
@@ -206,7 +258,7 @@ def launch_campaign(
     company: Company = Depends(get_current_company),
     db: Session = Depends(get_db),
 ):
-    """Launch a draft campaign → sets status to ACTIVE."""
+    """Launch a draft campaign and start the AI pipeline."""
     c = db.query(Campaign).filter(
         Campaign.id == campaign_id,
         Campaign.company_id == company.id,
@@ -215,10 +267,19 @@ def launch_campaign(
         raise HTTPException(status_code=404, detail="Campaign not found")
     if c.status != CampaignStatus.draft:
         raise HTTPException(status_code=400, detail=f"Cannot launch campaign in '{c.status.value}' status")
+
     c.status = CampaignStatus.active
     db.commit()
     db.refresh(c)
-    return _envelope(True, "Campaign launched successfully", _campaign_to_dict(c))
+
+    # Start pipeline
+    from app.tasks.pipeline_tasks import run_pipeline
+    run_pipeline.delay(
+        campaign_id=str(c.id),
+        company_id=str(company.id),
+    )
+
+    return _envelope(True, "Campaign launched — AI pipeline started", _campaign_to_dict(c))
 
 
 @router.post("/{campaign_id}/pause")
@@ -291,7 +352,9 @@ def upsert_workflow_config(
     company: Company = Depends(get_current_company),
     db: Session = Depends(get_db),
 ):
-    """Save the AI workflow configuration for a campaign."""
+    """
+    Save workflow config and return graph preview showing all pipeline stages.
+    """
     c = db.query(Campaign).filter(
         Campaign.id == campaign_id,
         Campaign.company_id == company.id,
@@ -316,8 +379,14 @@ def upsert_workflow_config(
 
     db.commit()
     db.refresh(config)
+
+    # Build and return graph preview
+    workflow_config = {"rounds_selected": payload.rounds_selected}
+    graph_preview = get_graph_preview(workflow_config)
+
     return _envelope(True, "Workflow config saved", {
         "campaign_id": str(campaign_id),
         "rounds_selected": config.rounds_selected,
         "approval_gates": config.approval_gates,
+        "graph_preview": graph_preview,
     })

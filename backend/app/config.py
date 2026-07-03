@@ -30,11 +30,10 @@ class Settings(BaseSettings):
     # Daily.co
     DAILY_API_KEY: str = ""
 
-    # Cloudflare R2
-    CLOUDFLARE_R2_ACCESS_KEY: str = ""
-    CLOUDFLARE_R2_SECRET_KEY: str = ""
-    CLOUDFLARE_R2_ENDPOINT: str = ""
-    CLOUDFLARE_R2_BUCKET: str = "hireflow"
+    # Supabase Storage
+    SUPABASE_URL: str = ""
+    SUPABASE_SERVICE_KEY: str = ""
+    SUPABASE_STORAGE_BUCKET: str = "hireflow"
 
     # SendGrid
     SENDGRID_API_KEY: str = ""
