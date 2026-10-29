@@ -47,11 +47,12 @@ def process_resume_task(self, candidate_id: str, campaign_id: str, company_id: s
         )
         logger.info(f"[Tasks:ProcessResume] Completed - candidate={candidate_id}: {result}")
 
-        # NOTE: Once Task 4.4 (evaluation_agent) exists, this is where we'd
-        # check "are all of this campaign's resumes parsed yet?" and, if so,
-        # trigger the shortlist checkpoint via resume_pipeline. Left as a
-        # follow-up since evaluation_agent doesn't exist yet -- process_resume_task
-        # currently ends after scoring a single candidate.
+        # NOTE: evaluation is intentionally NOT auto-triggered here.
+        # Applications are rolling, not a fixed batch, so "all resumes
+        # processed" doesn't reliably mean "ready to shortlist" -- HR
+        # decides when the window is effectively closed and triggers
+        # evaluation manually via POST /campaigns/{id}/evaluate
+        # (see api/resumes.py), informed by GET .../resumes/status.
 
         return {"status": "ok", **result}
 

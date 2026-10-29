@@ -291,3 +291,77 @@ def get_candidate_resume(
         }
 
     return _envelope(True, "OK", data)
+
+
+# -- GET /campaigns/{campaign_id}/resumes/status ------------------------------
+
+@router.get("/campaigns/{campaign_id}/resumes/status")
+def get_resume_processing_status(
+    campaign_id: UUID,
+    company: Company = Depends(get_current_company),
+    db: Session = Depends(get_db),
+):
+    """Live counts of resume processing state for this campaign, so HR can
+    judge readiness before manually triggering evaluation (see POST
+    /campaigns/{campaign_id}/evaluate) -- there's no automatic "all done"
+    trigger since applications are rolling, not a fixed batch: HR decides
+    when the application window is effectively closed, not the system."""
+    _get_owned_campaign(db, campaign_id, company)
+
+    rows = (
+        db.query(Resume.parse_status, Candidate.id)
+        .join(Candidate, Resume.candidate_id == Candidate.id)
+        .filter(Candidate.campaign_id == campaign_id, Candidate.company_id == company.id)
+        .all()
+    )
+
+    counts = {"pending": 0, "parsed": 0, "failed": 0}
+    for parse_status, _candidate_id in rows:
+        counts[parse_status.value] = counts.get(parse_status.value, 0) + 1
+
+    return _envelope(True, "OK", {
+        "total_candidates": len(rows),
+        "pending": counts["pending"],
+        "parsed": counts["parsed"],
+        "failed": counts["failed"],
+        "ready_to_evaluate": counts["pending"] == 0 and counts["parsed"] > 0,
+    })
+
+
+# -- POST /campaigns/{campaign_id}/evaluate ------------------------------------
+
+@router.post("/campaigns/{campaign_id}/evaluate")
+def trigger_evaluation(
+    campaign_id: UUID,
+    company: Company = Depends(get_current_company),
+    db: Session = Depends(get_db),
+):
+    """HR-triggered: ranks every scored candidate in this campaign and
+    shortlists/rejects them (see agents/evaluation.py for the cutoff logic).
+
+    Runs synchronously rather than via Celery -- it's pure DB read/write
+    with no LLM calls, so it's fast even for a few hundred candidates and
+    HR gets the result immediately rather than having to poll."""
+    from app.agents.evaluation import evaluation_node
+
+    _get_owned_campaign(db, campaign_id, company)
+
+    state = {
+        "campaign_id": str(campaign_id),
+        "company_id": str(company.id),
+        "workflow_config": {},
+    }
+    result = evaluation_node(state, db=db)
+
+    if result.get("error"):
+        raise HTTPException(status_code=500, detail=result["error"])
+
+    logger.info(
+        f"[Resumes:Evaluate] campaign={campaign_id} -- "
+        f"{len(result['shortlisted'])} shortlisted"
+    )
+
+    return _envelope(True, f"Evaluated -- {len(result['shortlisted'])} candidate(s) shortlisted", {
+        "shortlisted_count": len(result["shortlisted"]),
+        "shortlisted": result["shortlisted"],
+    })
