@@ -57,6 +57,7 @@ from app.api.companies import router as companies_router
 from app.api.campaigns import router as campaigns_router
 from app.api.checkpoints import router as checkpoints_router
 from app.api.colleges import router as colleges_router
+from app.api.colleges import campaign_colleges_router
 from app.api.candidates import router as candidates_router
 from app.api.candidates import campaign_candidates_router
 from app.api.resumes import router as resumes_router
@@ -75,6 +76,7 @@ app.include_router(companies_router)
 app.include_router(campaigns_router)
 app.include_router(checkpoints_router)
 app.include_router(colleges_router)
+app.include_router(campaign_colleges_router)  
 app.include_router(candidates_router)
 app.include_router(campaign_candidates_router)
 app.include_router(resumes_router)
